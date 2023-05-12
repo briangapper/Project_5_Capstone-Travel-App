@@ -62,7 +62,7 @@ module.exports = {
             },
             {
                 // transforms SASS files into normal CSS files
-                test: /\.scss$/,
+                test: /.scss$/,
                 use: ['style-loader', 'css-loader', 'sass-loader']
 
             }

@@ -9,24 +9,52 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700&display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" type="text/css" href="../styles/styles.scss">
     </head>
 
     <body>
 
         <header>
-            <h1>Capstone Travel App</h1>
+            <h1>Travel Planner</h1>
+            <p>
+                Are you considering a trip and looking for help to plan it comfortably?
+                This travel planner is the perfect tool to help you with your plans. Tell us where you want to go and when you plan to leave.
+                This application will create a compact card of your trip with all the necessary information.
+            </p>
 
         </header>
 
         <main>
 
+            <div class="inputs">
+                
+                <div class="input-destination">
+                    <label for="destination">My trip to:</label>
+                    <input type="text" id="destination" name="input-field" placeholder="Enter your destination here">
+                </div>
+                
+                <div class="input-date">
+                    <label for="date">Departure:</label>
+                    <input type="date" id="date" name="birthdate">
+                </div>
+
+
+            </div>
+
+
+            <div class="buttons">
+                <button type="button" id="generate-trip">Generate Trip</button>
+
+            </div>
+
+            <div class="card">
+                <button type="button" id ="remove-trip">Remove Trip</button>
+            </div>
+            
 
         </main>
 
         <footer>
-
-
+            FOOTER
         </footer>
 
     </body>
