@@ -4,15 +4,9 @@
 // --------------------------------------------------------------------------------
 // ********************************************************************************
 
-/* Box sizing */
-* {
-    box-sizing: border-box;
-}
-
 /* Html styles */
 html {
     margin: 0;
-    padding: 1vh;
     background-color: #fff;
     font-family: 'Montserrat', sans-serif;
 }
@@ -23,30 +17,6 @@ img {
     height: auto;
 }
 
-// ********************************************************************************
-// --------------------------------------------------------------------------------
-// 2.) TYPOGRAPHY General
-// --------------------------------------------------------------------------------
-// ********************************************************************************
-h1 {
-    text-align: center;
-}
-
-p {
-    text-align: justify;
-    line-height: 30px;
-}
-
-label {
-    font-weight: bold;
-}
-
-
-// ********************************************************************************
-// --------------------------------------------------------------------------------
-// 3.) LAYOUT General
-// --------------------------------------------------------------------------------
-// ********************************************************************************
 header {
 
     min-height: 20vh;
@@ -65,37 +35,112 @@ footer {
 
 }
 
-
-
 // ********************************************************************************
 // --------------------------------------------------------------------------------
-// 4.) STYLES General
+// 2.) TYPOGRAPHY General
 // --------------------------------------------------------------------------------
 // ********************************************************************************
-.inputs {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px;
+h1 {
+    text-align: center;
+}
+
+p {
+    text-align: justify;
+    line-height: 30px;
 }
 
 label {
-    display: block;
+    font-weight: bold;
+    font-size: 20px;
 }
 
-input {
-    border-radius: 10px;
-    display: block;
-}
+// ********************************************************************************
+// --------------------------------------------------------------------------------
+// 3.) USER INPUT CONTAINER
+// --------------------------------------------------------------------------------
+// ********************************************************************************
 
-.buttons {
+// ----------------------------------------
+// 3.1) User input divs
+// ----------------------------------------
+.user-inputs-container {
+    background-color: #e7e7e7;
+
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 10px;
-    margin: 3vh 0vh;
+    flex-direction: column;
+    gap: 20px;
+
+    padding: 20px;
 }
 
+.input-destination-div, .input-date-div {
+    display: flex;
+    gap: 8px;
+}
+
+.label-destination, .label-date {
+    width: 50%;
+    text-align: right;
+}
+
+// ----------------------------------------
+// 3.2) User inputs
+// ----------------------------------------
+#input-destination {
+    padding-top: 4px;
+    width: 50%;
+
+    background-color: transparent;
+    border: none;
+}
+
+#input-destination::placeholder {
+    color: #555555;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+}
+
+#input-date {
+    color: #555555;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+
+    background-color: transparent;
+    border: none;
+
+    max-width: 160px;
+}
+
+// ----------------------------------------
+// 3.3) Generate trip button
+// ----------------------------------------
+.generate-trip-div {
+    text-align: center;
+}
+
+#generate-trip-btn {
+    font-size: 20px;
+    border: 1px solid black;
+    background-color: #b5e0b6;
+}
+
+#generate-trip-btn:hover {
+    letter-spacing: 3px;
+    transition: 0.3s;
+    color: #3e6b44;
+}
+// ********************************************************************************
+// --------------------------------------------------------------------------------
+// 4.) TRIP CARDS
+// --------------------------------------------------------------------------------
+// ********************************************************************************
+
+// ----------------------------------------
+// 4.1) Generate trip button
+// ----------------------------------------
 
 
 

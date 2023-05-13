@@ -39,7 +39,9 @@ module.exports = {
         // sets the output target type
         libraryTarget: 'var',
         // exports the built module as a variable to be used in the browser environment to ensure communication between files
-        library: 'Client'
+        library: 'Client',
+        // handle images
+        assetModuleFilename: 'images/[name][ext]'
     },
 
     // ----------------------------------------
@@ -65,6 +67,11 @@ module.exports = {
                 test: /.scss$/,
                 use: ['style-loader', 'css-loader', 'sass-loader']
 
+            },
+            {
+                // handle images
+                test: /\.(png|jpe?g|gif|svg)$/,
+                type: 'asset/resource'
             }
         ]
     },

@@ -25,29 +25,43 @@
 
         <main>
 
-            <div class="inputs">
+            <div class="user-inputs-container">
                 
-                <div class="input-destination">
-                    <label for="destination">My trip to:</label>
-                    <input type="text" id="destination" name="input-field" placeholder="Enter your destination here">
+                <div class="input-destination-div">
+                    <label class="label-destination" for="input-destination">My trip to:</label>
+                    <input type="text" id="input-destination" name="input-destination" placeholder="Enter Destination">
                 </div>
                 
-                <div class="input-date">
-                    <label for="date">Departure:</label>
-                    <input type="date" id="date" name="birthdate">
+                <div class="input-date-div">
+                    <label class="label-date" for="input-date">Departing:</label>
+                    <input type="date" id="input-date" name="departing">
+                </div>
+
+                <div class="generate-trip-div">
+                    <button type="button" id="generate-trip-btn">Generate Trip</button>
+                </div>
+            </div>
+
+            <div class="trip-cards">
+
+                <div class="trip-card">
+
+                    <div class="trip-card-img">
+
+                        <img src="../images/paris.jpg" alt="Paris">
+
+                    </div>
+
+                    <div class="trip-card-info">
+
+
+
+                    </div>
+
+                    <button type="button" id ="remove-trip">Remove Trip</button>
                 </div>
 
 
-            </div>
-
-
-            <div class="buttons">
-                <button type="button" id="generate-trip">Generate Trip</button>
-
-            </div>
-
-            <div class="card">
-                <button type="button" id ="remove-trip">Remove Trip</button>
             </div>
             
 
