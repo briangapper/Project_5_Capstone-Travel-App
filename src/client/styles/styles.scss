@@ -11,28 +11,30 @@ html {
     font-family: 'Montserrat', sans-serif;
 }
 
+/* Body styles */
+body {
+    margin: 0;
+}
+
 /* Responsive images */
 img {
     max-width: 100%;
     height: auto;
 }
 
+/* Header height */
 header {
-
     min-height: 20vh;
-
 }
 
+/* Main height */
 main {
-
     min-height: 70vh;
-
 }
 
+/* Footer height */
 footer {
-
     min-height: 10vh;
-
 }
 
 // ********************************************************************************
@@ -44,14 +46,15 @@ h1 {
     text-align: center;
 }
 
-p {
-    text-align: justify;
-    line-height: 30px;
-}
-
 label {
     font-weight: bold;
     font-size: 20px;
+}
+
+.web-app-description {
+    padding: 8px;
+    text-align: justify;
+    line-height: 30px;
 }
 
 // ********************************************************************************
@@ -123,14 +126,16 @@ label {
 
 #generate-trip-btn {
     font-size: 20px;
-    border: 1px solid black;
-    background-color: #b5e0b6;
+    border: none;
+    border-radius: 10px;
+    background-color: #1a8b1d;
+    color: #fff;
 }
 
 #generate-trip-btn:hover {
     letter-spacing: 3px;
     transition: 0.3s;
-    color: #3e6b44;
+
 }
 // ********************************************************************************
 // --------------------------------------------------------------------------------
@@ -139,9 +144,37 @@ label {
 // ********************************************************************************
 
 // ----------------------------------------
-// 4.1) Generate trip button
+// 4.1) Trip card
 // ----------------------------------------
+.trip-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #d4f5d5
+}
 
+.trip-card-info {
+    padding: 8px;
+}
+
+.trip-card-functions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+}
+
+div button {
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    background-color: #1a8b1d;
+    color: #fff;
+    padding: 3px;
+}
+
+#remove-trip {
+    background-color: #ad1212;
+}
 
 
 

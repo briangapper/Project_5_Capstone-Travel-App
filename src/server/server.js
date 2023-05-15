@@ -91,6 +91,11 @@ app.get('/test', function(req, res){
 // ----------------------------------------
 app.get('/geoNames', getLocationData);
 
+// ----------------------------------------
+// 3.3) Initiate '/weatherbit' route
+// ----------------------------------------
+app.get('/weatherbit', getWeatherForecast);
+
 // ********************************************************************************
 // --------------------------------------------------------------------------------
 // 4.) INITIATE FUNCTIONS
@@ -98,32 +103,32 @@ app.get('/geoNames', getLocationData);
 // ********************************************************************************
 
 // ----------------------------------------
-// 4.1) getLocationData callback function
+// 4.1) function getLocationData: makes HTTP GET request to the GeoNames API to get further data of the user destination
 // ----------------------------------------
 async function getLocationData(req, res){
 
+    // Get the destination value from the request object
+    const destination = req.query.destination;
+    console.log('Server -> getLocationData -> Destination: ', destination);
+
+    // URL for the GET request to the GeoNames API 
+    const geoNames_baseURL = `http://api.geonames.org/searchJSON?q=${destination}&maxRows=1&username=${process.env.GEONAME_USERNAME}`;
+
     try {
 
-        // Information for GeoNamesAPI
-        const geoName_baseURL = 'http://api.geonames.org/searchJSON?q=';
-        const geoName_params = '&maxRows=1&username=';
-
-        // Get the destination query parameter from the request object
-        const destination = req.query.destination;
-        console.log('Server: getLocationData -> Deatination: ', destination)
-
-        // Make a GET request to the GeoNames API to get the data of the destination
-        const response = await fetch(geoName_baseURL + destination + geoName_params + process.env.GEONAME_USERNAME);
+        // Make a GET request to the GeoNames API to get further data of the destination
+        const response = await fetch(geoNames_baseURL);
         const data = await response.json();
 
         // Extract the latitude, longitude and country from the response data
-        let result = {
+        const result = {
             lat: data.geonames[0].lat,
             lng: data.geonames[0].lng,
+            city: data.geonames[0].name,
             country: data.geonames[0].countryName
         }
 
-        console.log('Server -> GeoNames result: ', result)
+        console.log('Server -> getLocationData -> GeoNames result: ', result)
 
         // Return result
         res.send(result)
@@ -133,6 +138,44 @@ async function getLocationData(req, res){
         console.log('Error function getLocationData', error);
 
     }
+}
 
+// ----------------------------------------
+// 4.2) function getWeatherForecast: makes HTTP GET request to the Weatherbit API to get weather forecast 
+// ----------------------------------------
+async function getWeatherForecast(req, res){
 
+    // Get the lat and lng value from the request object
+    const lat = req.query.lat;
+    const lng = req.query.lng;
+
+    console.log('Server -> getWeatherForecast -> Lat: ', lat);
+    console.log('Server -> getWeatherForecast -> Lng: ', lng);
+
+    // URL for the GET request to the Weatherbit API
+    const weatherbit_baseURL = `http://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lng}&key=${process.env.WEATHERBIT_KEY}`;
+
+    try {
+
+        // Make a GET request to the Weatherbit API to get the weather forecast
+        const response = await fetch(weatherbit_baseURL);
+        const data = await response.json();
+
+        // Extract the max temp, min temp and the weather description from the response data
+        const result = {
+            max_temp: data.data[0].max_temp,
+            min_temp: data.data[0].min_temp,
+            weather_description: data.data[0].weather.description
+        }
+
+        console.log('Server -> getWeatherForecast -> Weatherbit result: ', result)
+
+        // Return result
+        res.send(result)
+
+    } catch (error) {
+
+        console.log('Error function getWeatherForecast', error);
+
+    }
 }
