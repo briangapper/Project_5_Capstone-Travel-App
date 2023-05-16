@@ -30,6 +30,7 @@ const mockAPIResponse = require('./test.js');
 // ********************************************************************************
 let geoNamesData = [];
 let weatherbitData = [];
+let pixabayData = [];
 
 // ********************************************************************************
 // --------------------------------------------------------------------------------
@@ -94,6 +95,11 @@ app.get('/geoNames', getLocationData);
 // ----------------------------------------
 app.get('/weatherbit', getWeatherForecast);
 
+// ----------------------------------------
+// 3.4) Initiate '/pixabay' route
+// ----------------------------------------
+app.get('/pixabay', getDestinationPicture);
+
 // ********************************************************************************
 // --------------------------------------------------------------------------------
 // 4.) INITIATE FUNCTIONS
@@ -135,9 +141,7 @@ async function getLocationData(req, res){
         res.send(result);
 
     } catch (error) {
-
         console.log('Error function getLocationData', error);
-
     }
 }
 
@@ -181,8 +185,42 @@ async function getWeatherForecast(req, res){
         res.send(result);
 
     } catch (error) {
-
         console.log('Error function getWeatherForecast', error);
+    }
+}
 
+// ----------------------------------------
+// 4.3) function getDestinationPicture: makes HTTP GET request to the Pixabay API to get destination picture 
+// ----------------------------------------
+async function getDestinationPicture(req, res){
+
+    // Get the user destination from the request object
+    const destination = req.query.destination;
+
+    // URL for the GET request to the Pixabay API
+    const pixabay_baseURL = `http://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${destination}&image_type=photo`;
+
+    try {
+
+        // Make a GET request to the Pixabay API to get an appropriate destination picture
+        const response = await fetch(pixabay_baseURL);
+        const data = await response.json();
+
+        // Extract the imageURL from the response data
+        const result = {
+            destination: destination,
+            imageURL: data.hits[0].largeImageURL
+        };
+
+        console.log('Server -> getDestinationPicture -> Pixabay result: ', result);
+        
+        // Add result to pixabay array
+        pixabayData.push(result);
+
+        // Return result
+        res.send(result);
+
+    } catch (error) {
+        console.log('Error function getDestinationPicture', error);
     }
 }

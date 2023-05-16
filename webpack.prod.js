@@ -52,8 +52,6 @@ module.exports = {
         libraryTarget: 'var',
         // exports the built module as a variable to be used in the browser environment to ensure communication between files
         library: 'Client',
-        // handle images
-        assetModuleFilename: 'images/[name][ext]'
     },
 
     // ----------------------------------------
@@ -81,11 +79,6 @@ module.exports = {
                 // transforms SASS files into normal CSS files
                 test: /\.scss$/,
                 use: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
-            },
-            {
-                // handle images
-                test: /\.(png|jpe?g|gif|svg)$/,
-                type: 'asset/resource'
             }
         ]
     },
