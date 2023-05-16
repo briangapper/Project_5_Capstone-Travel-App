@@ -46,7 +46,7 @@ app.use(cors());
 
 app.use(bodyParser.urlencoded({
     extended: false
-}));
+}))
 app.use(bodyParser.json());
 
 // ----------------------------------------
@@ -60,8 +60,8 @@ app.use(express.static('dist/dev'));
 // 2.3) Configure port
 // ----------------------------------------
 app.listen(8000, function(){
-    console.log('App is listening on port 8000!')
-});
+    console.log('App is listening on port 8000!');
+})
 
 // ********************************************************************************
 // --------------------------------------------------------------------------------
@@ -73,17 +73,17 @@ app.listen(8000, function(){
 // 3.1) Initiate GET '/' route
 // ----------------------------------------
 app.get('/', function(req, res){
-    res.sendFile('dist/dev/index.html')
-    // res.sendFile('dist/prod/index.html')
-    // res.sendFile(path.resolve('src/client/views/index.html'))
-});
+    res.sendFile('dist/dev/index.html');
+    // res.sendFile('dist/prod/index.html');
+    // res.sendFile(path.resolve('src/client/views/index.html'));
+})
 
 // ----------------------------------------
 // 3.2) Initiate '/test' route
 // ----------------------------------------
 app.get('/test', function(req, res){
-    res.send(mockAPIResponse)
-});
+    res.send(mockAPIResponse);
+})
 
 // ----------------------------------------
 // 3.2) Initiate '/geoNames' route
@@ -115,33 +115,39 @@ async function getLocationData(req, res){
     const destination = req.query.destination;
     console.log('Server -> getLocationData -> Destination: ', destination);
 
-    // URL for the GET request to the GeoNames API 
+    // URL for the HTTP GET request to the GeoNames API 
     const geoNames_baseURL = `http://api.geonames.org/searchJSON?q=${destination}&maxRows=1&username=${process.env.GEONAME_USERNAME}`;
 
     try {
 
-        // Make a GET request to the GeoNames API to get further data of the destination
+        // Make a HTTP GET request to the GeoNames API to get further data of the destination
         const response = await fetch(geoNames_baseURL);
         const data = await response.json();
+        let result = {};
 
-        // Extract the latitude, longitude and country from the response data
-        const result = {
-            lat: data.geonames[0].lat,
-            lng: data.geonames[0].lng,
-            city: data.geonames[0].name,
-            country: data.geonames[0].countryName
-        };
+        // Check if fetch was successful
+        if(data.geonames.length > 0){
 
-        console.log('Server -> getLocationData -> GeoNames result: ', result);
-        
-        // Add result to geoNames array
-        geoNamesData.push(result);
+            // Extract the latitude, longitude and country from the response data
+            result = {
+                lat: data.geonames[0].lat,
+                lng: data.geonames[0].lng,
+                city: data.geonames[0].name,
+                country: data.geonames[0].countryName
+            };
+
+            console.log('Server -> getLocationData -> GeoNames result: ', result);
+
+            // Add result to geoNames array
+            geoNamesData.push(result);
+        }
 
         // Return result
         res.send(result);
 
     } catch (error) {
         console.log('Error function getLocationData', error);
+        res.send(error);
     }
 }
 
@@ -160,12 +166,12 @@ async function getWeatherForecast(req, res){
 
     console.log(`Server -> getWeatherForecast -> Lat: ${lat}, Lng: ${lng}, Days: ${days}`);
 
-    // URL for the GET request to the Weatherbit API
+    // URL for the HTTP GET request to the Weatherbit API
     const weatherbit_baseURL = `http://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lng}&key=${process.env.WEATHERBIT_KEY}`;
 
     try {
 
-        // Make a GET request to the Weatherbit API to get the weather forecast
+        // Make a HTTP GET request to the Weatherbit API to get the weather forecast
         const response = await fetch(weatherbit_baseURL);
         const data = await response.json();
 
@@ -197,12 +203,12 @@ async function getDestinationPicture(req, res){
     // Get the user destination from the request object
     const destination = req.query.destination;
 
-    // URL for the GET request to the Pixabay API
+    // URL for the HTTP GET request to the Pixabay API
     const pixabay_baseURL = `http://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${destination}&image_type=photo`;
 
     try {
 
-        // Make a GET request to the Pixabay API to get an appropriate destination picture
+        // Make a HTTP GET request to the Pixabay API to get an appropriate destination picture
         const response = await fetch(pixabay_baseURL);
         const data = await response.json();
 

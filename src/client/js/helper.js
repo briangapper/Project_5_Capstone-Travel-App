@@ -5,27 +5,57 @@
 // ********************************************************************************
 
 // --------------------------------------------------------------------------------
-// 1.1) function calculateTimeDifference: calculate time difference
+// 1.1) function checkUserInput: check if user has entered an input
 // --------------------------------------------------------------------------------
-function calculateTimeDifference(){
+function checkUserInput(inputDestination, inputDate){
 
-    // retrieve departing user input and change the format
-    const inputDate = document.getElementById('input-date').value;
-    const parts = inputDate.split('-');
-    const transformedDate = parts[2] + '/' + parts[1] + '/' + parts[0];
+    try {
 
-    console.log('User departure: ', transformedDate);
-    
-    // calculate the time difference
-    const selectedDate = new Date(inputDate);
-    const currentDate = new Date();
-    const timeDifference = selectedDate.getTime() - currentDate.getTime();
+        console.log('2.) Start function checkUserInput');
 
-    const msPerDay = 24*60*60*1000;
-    const dayDifference = Math.ceil(timeDifference / msPerDay);
+        // check if 'destination' user input is not empty
+        if(!inputDestination){
+            alert('Please enter a destination.');
+            throw new Error('Please enter a destination.');
+        }
 
-    return { transformedDate, dayDifference };
-};
+        // check if 'date' user input is not empty
+        if(!inputDate){
+            alert('Please enter a departing date.');
+            throw new Error('Please enter a departing date.');
+        }
+
+    } catch (error) {
+        console.log('Error function checkUserInput', error);
+        throw error;
+    }
+}
+
+// --------------------------------------------------------------------------------
+// 1.2) function calculateTimeDifference: calculate days till departure
+// --------------------------------------------------------------------------------
+function calculateTimeDifference(inputDate){
+
+    try {
+
+        // transform format
+        const parts = inputDate.split('-');
+        const transformedDate = parts[2] + '/' + parts[1] + '/' + parts[0];
+
+        // calculate days till departure
+        const selectedDate = new Date(inputDate);
+        const currentDate = new Date();
+        const timeDifference = selectedDate.getTime() - currentDate.getTime();
+
+        const msPerDay = 24*60*60*1000;
+        const dayDifference = Math.ceil(timeDifference / msPerDay);
+
+        return { transformedDate, dayDifference };
+
+    } catch (error) {
+        console.log('Error function calculateTimeDifference', error);
+    }
+}
 
 // ********************************************************************************
 // --------------------------------------------------------------------------------
@@ -33,5 +63,6 @@ function calculateTimeDifference(){
 // --------------------------------------------------------------------------------
 // ********************************************************************************
 export {
-    calculateTimeDifference
+    calculateTimeDifference,
+    checkUserInput
 }

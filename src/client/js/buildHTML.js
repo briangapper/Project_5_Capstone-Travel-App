@@ -9,7 +9,7 @@
 // --------------------------------------------------------------------------------
 function createTripImg(trip_card, geoNamesData, pixabayData){
 
-    console.log('5.1) create trip-img');
+    console.log('6.1) create trip-img');
 
     // retrieve object values
     const img_path = pixabayData.imageURL;
@@ -34,7 +34,7 @@ function createTripImg(trip_card, geoNamesData, pixabayData){
 // --------------------------------------------------------------------------------
 function createTripInfo(trip_card, inputDate, dayDifference, geoNamesData, weatherbitData){
 
-    console.log('5.2) create trip-info');
+    console.log('6.2) create trip-info');
 
     // create div for trip-info
     const trip_card_info = document.createElement('div');
@@ -61,7 +61,7 @@ function createTripInfo(trip_card, inputDate, dayDifference, geoNamesData, weath
 // --------------------------------------------------------------------------------
 function createTripInfo_Destination(trip_card_info, geoNamesData){
 
-    console.log('5.2.1) create trip-info-destination');
+    console.log('6.2.1) create trip-info-destination');
 
     // retrieve object values
     const city = geoNamesData.city;
@@ -86,7 +86,7 @@ function createTripInfo_Destination(trip_card_info, geoNamesData){
 // --------------------------------------------------------------------------------
 function createTripInfo_Departing(trip_card_info, inputDate){
 
-    console.log('5.2.2) create trip-info-departing');
+    console.log('6.2.2) create trip-info-departing');
 
     // create paragraph with span element
     const p2 = document.createElement('p');
@@ -107,7 +107,7 @@ function createTripInfo_Departing(trip_card_info, inputDate){
 // --------------------------------------------------------------------------------
 function createTripInfo_XDaysAway(trip_card_info, dayDifference, geoNamesData){
 
-    console.log('5.2.3) create trip-info-x-days-away');
+    console.log('6.2.3) create trip-info-x-days-away');
 
     // retrieve object values
     const city = geoNamesData.city;
@@ -140,7 +140,7 @@ function createTripInfo_Weather(trip_card_info, weatherbitData){
     // check if weatherbitData object contains values
     if(Object.keys(weatherbitData).length > 0){
 
-        console.log('5.2.4) create trip-info-weather');
+        console.log('6.2.4) create trip-info-weather');
 
         // retrieve object values
         const max_temp = weatherbitData.max_temp;
@@ -183,7 +183,7 @@ function createTripInfo_Weather(trip_card_info, weatherbitData){
 // --------------------------------------------------------------------------------
 function createTripButtons(trip_card){
 
-    console.log('5.3) create trip-buttons');
+    console.log('6.3) create trip-buttons');
 
     // create div for trip-buttons
     const trip_card_buttons = document.createElement('div');
