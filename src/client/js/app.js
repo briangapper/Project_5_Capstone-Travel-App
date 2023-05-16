@@ -13,7 +13,6 @@ import { calculateTimeDifference } from './helper.js';
 const port = 8000;
 const pathGeoNames = `http://localhost:${port}/geoNames`;
 const pathWeatherbit = `http://localhost:${port}/weatherbit`
-const geoNamesData = {};
 
 // ********************************************************************************
 // --------------------------------------------------------------------------------
@@ -26,6 +25,7 @@ const geoNamesData = {};
 // --------------------------------------------------------------------------------
 async function planTrip(event){
 
+    let weatherbitData = {};
     console.log('1.) Start function planTrip');
 
     // prevent default 'click' behavior
@@ -41,7 +41,11 @@ async function planTrip(event){
     try {
 
         const geoNamesData = await getLocationData(inputDestination);
-        const weatherbitData = await getWeatherForecast(geoNamesData);
+
+        if(dayDifference <= 16){
+            weatherbitData = await getWeatherForecast(geoNamesData, dayDifference);
+        }
+        
         createTripCard(geoNamesData, weatherbitData, dayDifference, transformedDate);
 
     } catch (error) {
@@ -75,7 +79,7 @@ async function getLocationData(inputDestination){
 // --------------------------------------------------------------------------------
 // 2.3) async function getWeatherForecast: requests weather forecast from Weatherbit API
 // --------------------------------------------------------------------------------
-async function getWeatherForecast(geoNamesData){
+async function getWeatherForecast(geoNamesData, dayDifference){
 
     console.log('3.) Start function getWeatherForecast');
 
@@ -83,7 +87,7 @@ async function getWeatherForecast(geoNamesData){
     const lng = geoNamesData.lng;
 
     // fetch call
-    return fetch(`${pathWeatherbit}?lat=${lat}&lng=${lng}`)
+    return fetch(`${pathWeatherbit}?lat=${lat}&lng=${lng}&departure=${dayDifference}`)
         .then(response => response.json())
         .then(data => {
             // Handle the response data
@@ -105,10 +109,6 @@ function createTripCard(geoNamesData, weatherbitData, dayDifference, inputDate){
 
     const city = geoNamesData.city;
     const country = geoNamesData.country;
-
-    const max_temp = weatherbitData.max_temp;
-    const min_temp = weatherbitData.min_temp;
-    const weather_description = weatherbitData.weather_description;
 
     // ----------------------------------------
     // 2.4.1) Create new trip-card
@@ -178,40 +178,49 @@ function createTripCard(geoNamesData, weatherbitData, dayDifference, inputDate){
 
     trip_card_info.appendChild(p3);
 
-    // create paragraph for 'weather'-info
-    const p4 = document.createElement('p');
-    p4.innerHTML = 'Typical weather ';
-    p4.style.fontWeight = 'bold';
+    // create paragraph for 'weather'-info if departure is in less then 16 days
 
-    const s4 = document.createElement('span');
-    s4.innerHTML = 'for then is: ';
-    s4.style.fontWeight = 'normal';
-    const br1 = document.createElement('br');
+    if(Object.keys(weatherbitData).length > 0){
 
-    const s5 = document.createElement('span');
-    s5.innerHTML = `High: ${max_temp}°C, Low: ${min_temp}°C`;
-    s5.style.fontSize = '14px';
-    s5.style.fontWeight = 'normal';
-    const br2 = document.createElement('br');
+        const max_temp = weatherbitData.max_temp;
+        const min_temp = weatherbitData.min_temp;
+        const weather_description = weatherbitData.weather_description;
 
-    const s6 = document.createElement('span');
-    s6.innerHTML = weather_description;
-    s6.style.fontSize = '14px';
-    s6.style.fontWeight = 'normal';
-
-    p4.appendChild(s4);
-    p4.appendChild(br1);
-    p4.appendChild(s5);
-    p4.appendChild(br2);
-    p4.appendChild(s6);
-    trip_card_info.appendChild(p4);
+        const p4 = document.createElement('p');
+        p4.innerHTML = 'Typical weather ';
+        p4.style.fontWeight = 'bold';
+    
+        const s4 = document.createElement('span');
+        s4.innerHTML = 'for then is: ';
+        s4.style.fontWeight = 'normal';
+        const br1 = document.createElement('br');
+    
+        const s5 = document.createElement('span');
+        s5.innerHTML = `High: ${max_temp}°C, Low: ${min_temp}°C`;
+        s5.style.fontSize = '14px';
+        s5.style.fontWeight = 'normal';
+        const br2 = document.createElement('br');
+    
+        const s6 = document.createElement('span');
+        s6.innerHTML = weather_description;
+        s6.style.fontSize = '14px';
+        s6.style.fontWeight = 'normal';
+    
+        p4.appendChild(s4);
+        p4.appendChild(br1);
+        p4.appendChild(s5);
+        p4.appendChild(br2);
+        p4.appendChild(s6);
+        trip_card_info.appendChild(p4);
+    }
+    
     trip_card.appendChild(trip_card_info);
-
+    
     // ----------------------------------------
-    // 2.4.4) Create trip-functions
+    // 2.4.4) Create trip-buttons
     // ----------------------------------------
 
-    // create div for trip-functions
+    // create div for trip-buttons
     const trip_card_functions = document.createElement('div');
     trip_card_functions.setAttribute('class', 'trip-card-functions');
 

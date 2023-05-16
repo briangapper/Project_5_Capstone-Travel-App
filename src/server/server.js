@@ -28,10 +28,8 @@ const mockAPIResponse = require('./test.js');
 // 1.) VARIABLES
 // --------------------------------------------------------------------------------
 // ********************************************************************************
-
-// ----------------------------------------
-// 1.1) 
-// ----------------------------------------
+let geoNamesData = [];
+let weatherbitData = [];
 
 // ********************************************************************************
 // --------------------------------------------------------------------------------
@@ -126,12 +124,15 @@ async function getLocationData(req, res){
             lng: data.geonames[0].lng,
             city: data.geonames[0].name,
             country: data.geonames[0].countryName
-        }
+        };
 
-        console.log('Server -> getLocationData -> GeoNames result: ', result)
+        console.log('Server -> getLocationData -> GeoNames result: ', result);
+        
+        // Add result to geoNames array
+        geoNamesData.push(result);
 
         // Return result
-        res.send(result)
+        res.send(result);
 
     } catch (error) {
 
@@ -145,12 +146,15 @@ async function getLocationData(req, res){
 // ----------------------------------------
 async function getWeatherForecast(req, res){
 
-    // Get the lat and lng value from the request object
+    // Get the lat amd lng values from the request object
     const lat = req.query.lat;
     const lng = req.query.lng;
 
-    console.log('Server -> getWeatherForecast -> Lat: ', lat);
-    console.log('Server -> getWeatherForecast -> Lng: ', lng);
+    // Get days until departure  from the request object and convert into int
+    const departure = req.query.departure;
+    const days = parseInt(departure);
+
+    console.log(`Server -> getWeatherForecast -> Lat: ${lat}, Lng: ${lng}, Days: ${days}`);
 
     // URL for the GET request to the Weatherbit API
     const weatherbit_baseURL = `http://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lng}&key=${process.env.WEATHERBIT_KEY}`;
@@ -163,15 +167,18 @@ async function getWeatherForecast(req, res){
 
         // Extract the max temp, min temp and the weather description from the response data
         const result = {
-            max_temp: data.data[0].max_temp,
-            min_temp: data.data[0].min_temp,
-            weather_description: data.data[0].weather.description
-        }
+            max_temp: data.data[days].max_temp,
+            min_temp: data.data[days].min_temp,
+            weather_description: data.data[days].weather.description
+        };
 
-        console.log('Server -> getWeatherForecast -> Weatherbit result: ', result)
+        console.log('Server -> getWeatherForecast -> Weatherbit result: ', result);
+        
+        // Add result to weatherbit array
+        weatherbitData.push(result);
 
         // Return result
-        res.send(result)
+        res.send(result);
 
     } catch (error) {
 
