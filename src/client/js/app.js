@@ -32,42 +32,54 @@ async function planTrip(event){
 
     console.log('1.) Start function planTrip');
 
-    // prevent default 'click' behavior
+    // prevent default behavior
     event.preventDefault();
 
     // declare variables
+    let geoNamesData = {};
+    let pixabayData = {};
     let weatherbitData = {};
+    let dayDifference = '';
+    let tripDuration = '';
 
-    // retrieve 'destination' user input
-    const inputDestination = document.getElementById('input-destination').value.trim();
-    console.log('User destination: ', inputDestination);
+    // retrieve user inputs
+    const destination = document.getElementById('input-destination').value.trim();
+    let startDate = document.getElementById('input-start-date').value;
+    let endDate = document.getElementById('input-end-date').value;
 
-    // retrieve 'departing' user input
-    const inputDate = document.getElementById('input-date').value;
-    console.log('User departure: ', inputDate);
+    console.log(`Destination: ${destination}, Departing: ${startDate}, Returning: ${endDate}`);
 
     try {
 
-        // check if user has entered an input
-        checkUserInput(inputDestination, inputDate);
+        // check if user has entered valid inputs
+        checkUserInput(destination, startDate, endDate);
 
-        // process 'date' user input and assign returned values to variables
-        const { transformedDate, dayDifference } = calculateTimeDifference(inputDate);
+        // perform date calculations and assign results to variables
+        const dateObject = calculateTimeDifference(startDate, endDate);
+
+        startDate = dateObject.transformed_startDate;
+        endDate = dateObject.transformed_endDate;
+        dayDifference = dateObject.dayDifference;
+        tripDuration = dateObject.tripDuration;
+
+        console.log(`Start date: ${startDate}, End date: ${endDate}, Days until departure: ${dayDifference}, Trip duration: ${tripDuration}`);
 
         // Get destination coordinates
-        const geoNamesData = await getLocationData(inputDestination);
+        geoNamesData = await getLocationData(destination);
 
         // Get weather information if departure is in less than 16 days
-        if(dayDifference <= 16){ weatherbitData = await getWeatherForecast(geoNamesData, dayDifference); };
+        if(dayDifference <= 16){
+            weatherbitData = await getWeatherForecast(geoNamesData, dayDifference);
+        };
 
         // Get destination picture
-        const pixabayData = await getDestinationPicture(inputDestination);
+        pixabayData = await getDestinationPicture(destination);
 
         // Check if the maximum trip-card limit is reached, if so, delete oldest trip-card
         checkTripCardLimit(5);
         
         // Create HTML trip-card
-        createTripCard(geoNamesData, weatherbitData, dayDifference, transformedDate, pixabayData);
+        createTripCard(geoNamesData, weatherbitData, pixabayData, startDate, endDate, dayDifference, tripDuration);
 
     } catch (error) {
         console.log('Error function planTrip -> ', error);
@@ -78,12 +90,12 @@ async function planTrip(event){
 // --------------------------------------------------------------------------------
 // 2.2) async function getLocationData: requests coordinates from GeoNames API
 // --------------------------------------------------------------------------------
-async function getLocationData(inputDestination){
+async function getLocationData(destination){
 
     console.log('2.) Start function getLocationData');
 
     // fetch call
-    return fetch(`${pathGeoNames}?destination=${inputDestination}`)
+    return fetch(`${pathGeoNames}?destination=${destination}`)
         .then(response => response.json())
         .then(data => {
             // Handle the response data
@@ -130,12 +142,12 @@ async function getWeatherForecast(geoNamesData, dayDifference){
 // --------------------------------------------------------------------------------
 // 2.4) async function getDestinationPicture: requests weather forecast from Weatherbit API
 // --------------------------------------------------------------------------------
-async function getDestinationPicture(inputDestination){
+async function getDestinationPicture(destination){
 
     console.log('4.) Start function getDestinationPicture');
 
     // fetch call
-    return fetch(`${pathPixabay}?destination=${inputDestination}`)
+    return fetch(`${pathPixabay}?destination=${destination}`)
         .then(response => response.json())
         .then(data => {
             // Handle the response data
@@ -169,7 +181,7 @@ function checkTripCardLimit(limit){
 // --------------------------------------------------------------------------------
 // 2.6) function createTripCard: create HTML trip card
 // --------------------------------------------------------------------------------
-function createTripCard(geoNamesData, weatherbitData, dayDifference, inputDate, pixabayData){
+function createTripCard(geoNamesData, weatherbitData, pixabayData, startDate, endDate, dayDifference, tripDuration){
 
     console.log('6.) Start function createTripCard');
 
@@ -187,7 +199,7 @@ function createTripCard(geoNamesData, weatherbitData, dayDifference, inputDate, 
     // ----------------------------------------
     // 2.6.3) Create trip-info
     // ----------------------------------------
-    createTripInfo(trip_card, inputDate, dayDifference, geoNamesData, weatherbitData);
+    createTripInfo(trip_card, geoNamesData, weatherbitData, startDate, endDate, dayDifference, tripDuration);
 
     // ----------------------------------------
     // 2.6.4) Create trip-buttons

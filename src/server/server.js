@@ -214,8 +214,6 @@ async function getDestinationPicture(req, res){
         const data = await response.json();
         let result = {};
 
-        console.log('Server -> getDestinationPicture -> Pixabay Data: ', data);
-
         // If no appropriate picture has been found, retrieve alternative img 
         if(data.hits.length === 0){
 
