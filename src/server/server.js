@@ -205,21 +205,40 @@ async function getDestinationPicture(req, res){
 
     // URL for the HTTP GET request to the Pixabay API
     const pixabay_baseURL = `http://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${destination}&image_type=photo`;
+    const pixabay_altURL = `http://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&id=1130732`;
 
     try {
 
         // Make a HTTP GET request to the Pixabay API to get an appropriate destination picture
         const response = await fetch(pixabay_baseURL);
         const data = await response.json();
+        let result = {};
 
-        // Extract the imageURL from the response data
-        const result = {
-            destination: destination,
-            imageURL: data.hits[0].largeImageURL
-        };
+        console.log('Server -> getDestinationPicture -> Pixabay Data: ', data);
 
-        console.log('Server -> getDestinationPicture -> Pixabay result: ', result);
+        // If no appropriate picture has been found, retrieve alternative img 
+        if(data.hits.length === 0){
+
+            const response_alt = await fetch(pixabay_altURL);
+            const data_alt = await response_alt.json();
+
+            result = {
+                destination: destination,
+                imageURL: data_alt.hits[0].fullHDURL
+            };
+        }
         
+        // If appropriate picture has been foung, extract the imageURL from the response data
+        if(data.hits.length > 0){
+
+            result = {
+                destination: destination,
+                imageURL: data.hits[0].fullHDURL
+            };
+        }
+        
+        console.log('Server -> getDestinationPicture -> Pixabay result: ', result);
+
         // Add result to pixabay array
         pixabayData.push(result);
 
