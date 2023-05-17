@@ -62,8 +62,11 @@ async function planTrip(event){
 
         // Get destination picture
         const pixabayData = await getDestinationPicture(inputDestination);
+
+        // Check if the maximum trip-card limit is reached, if so, delete oldest trip-card
+        checkTripCardLimit(5);
         
-        // Create HTML trip card
+        // Create HTML trip-card
         createTripCard(geoNamesData, weatherbitData, dayDifference, transformedDate, pixabayData);
 
     } catch (error) {
@@ -77,7 +80,7 @@ async function planTrip(event){
 // --------------------------------------------------------------------------------
 async function getLocationData(inputDestination){
 
-    console.log('3.) Start function getLocationData');
+    console.log('2.) Start function getLocationData');
 
     // fetch call
     return fetch(`${pathGeoNames}?destination=${inputDestination}`)
@@ -105,7 +108,7 @@ async function getLocationData(inputDestination){
 // --------------------------------------------------------------------------------
 async function getWeatherForecast(geoNamesData, dayDifference){
 
-    console.log('4.) Start function getWeatherForecast');
+    console.log('3.) Start function getWeatherForecast');
 
     const lat = geoNamesData.lat;
     const lng = geoNamesData.lng;
@@ -129,7 +132,7 @@ async function getWeatherForecast(geoNamesData, dayDifference){
 // --------------------------------------------------------------------------------
 async function getDestinationPicture(inputDestination){
 
-    console.log('5.) Start function getDestinationPicture');
+    console.log('4.) Start function getDestinationPicture');
 
     // fetch call
     return fetch(`${pathPixabay}?destination=${inputDestination}`)
@@ -146,37 +149,55 @@ async function getDestinationPicture(inputDestination){
 }
 
 // --------------------------------------------------------------------------------
-// 2.5) function createTripCard: create HTML trip card
+// 2.5) function checkTripCardLimit: Check if the maximum trip-card limit is reached, if so, delete oldest trip-card
+// --------------------------------------------------------------------------------
+function checkTripCardLimit(limit){
+
+    console.log('5.) Start function checkTripCardLimit');
+
+    const tripCardsCollection = document.getElementsByClassName('trip-card');
+    const tripCardsArray = Array.from(tripCardsCollection);
+
+    if(tripCardsArray.length >= limit){
+
+        const tripCardsContainer = document.getElementById('trip-cards');
+        const lastTripCard = tripCardsContainer.lastElementChild;
+        lastTripCard.remove();
+    }
+}
+
+// --------------------------------------------------------------------------------
+// 2.6) function createTripCard: create HTML trip card
 // --------------------------------------------------------------------------------
 function createTripCard(geoNamesData, weatherbitData, dayDifference, inputDate, pixabayData){
 
     console.log('6.) Start function createTripCard');
 
     // ----------------------------------------
-    // 2.5.1) Create new trip-card
+    // 2.6.1) Create new trip-card
     // ----------------------------------------
     const trip_card = document.createElement('div');
     trip_card.setAttribute('class', 'trip-card');
 
     // ----------------------------------------
-    // 2.5.2) Create trip-img
+    // 2.6.2) Create trip-img
     // ----------------------------------------
     createTripImg(trip_card, geoNamesData, pixabayData);
 
     // ----------------------------------------
-    // 2.5.3) Create trip-info
+    // 2.6.3) Create trip-info
     // ----------------------------------------
     createTripInfo(trip_card, inputDate, dayDifference, geoNamesData, weatherbitData);
 
     // ----------------------------------------
-    // 2.5.4) Create trip-buttons
+    // 2.6.4) Create trip-buttons
     // ----------------------------------------
     createTripButtons(trip_card, geoNamesData);
 
     // ----------------------------------------
-    // 2.5.5) Add new trip card to HTML parent div
+    // 2.6.5) Add new trip card to HTML parent div
     // ----------------------------------------
-    document.getElementById('trip-cards').appendChild(trip_card);
+    document.getElementById('trip-cards').prepend(trip_card);
 };
 
 // ********************************************************************************

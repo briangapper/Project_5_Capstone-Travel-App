@@ -5,13 +5,22 @@
 // ********************************************************************************
 
 // --------------------------------------------------------------------------------
-// 1.1) function checkUserInput: check if user has entered an input
+// 1.1) function checkUserInput: check if user has entered valid inputs
 // --------------------------------------------------------------------------------
 function checkUserInput(inputDestination, inputDate){
 
     try {
 
-        console.log('2.) Start function checkUserInput');
+        console.log('1.1) Start function checkUserInput');
+        
+        // check if 'date' user input is in the future
+        const currentDate = new Date();
+        const departingDate = new Date(inputDate);
+
+        if(departingDate < currentDate){
+            alert('The departing date must be in the future!');
+            throw new Error('The departing date must be in the future!');
+        }
 
         // check if 'destination' user input is not empty
         if(!inputDestination){
@@ -35,6 +44,8 @@ function checkUserInput(inputDestination, inputDate){
 // 1.2) function calculateTimeDifference: calculate days till departure
 // --------------------------------------------------------------------------------
 function calculateTimeDifference(inputDate){
+
+    console.log('1.2) Start function calculateTimeDifference');
 
     try {
 
