@@ -47,12 +47,12 @@ function createTripInfo(trip_card, geoNamesData, weatherbitData, startDate, endD
     createTripInfo_Departing(trip_card_info, startDate);
 
     // 1.2.3) creates paragraph for 'returning'-info if end-date has been given
-    if(endDate !== 0){
+    if(endDate !== 'undefined/undefined/'){
         createTripInfo_Returning(trip_card_info, endDate);
     }
 
     // 1.2.4) creates paragraph for 'trip duration'-info if end-date has been given
-    if(endDate !== 0){
+    if(endDate !== 'undefined/undefined/'){
         createTripInfo_TripDuration(trip_card_info, tripDuration);
     }
 
