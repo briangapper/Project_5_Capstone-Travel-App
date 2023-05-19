@@ -12,7 +12,8 @@ body {
     // ----------------------------------------
     img {
         max-width: 100%;
-        height: auto;
+        height: 100%;
+        object-fit: cover;
     }
 }
 
@@ -160,16 +161,40 @@ main {
 // --------------------------------------------------------------------------------
 // 2.2) TRIP CARDS
 // --------------------------------------------------------------------------------
+.trip-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 .trip-card {
     display: flex;
     flex-direction: column;
     background-color: #d4f5d5;
+    border: 1px solid black;
 
     // ----------------------------------------
     // 2.2.2) trip card info
     // ----------------------------------------
     .trip-card-info {
-        padding: 8px;
+        padding: 6vw;
+
+        p {
+            margin: 0;
+            line-height: 25px;
+        }
+
+        // 2.2.2.2) trip-card-info-stats
+        .trip-card-info-stats {
+            padding: 15px 0;
+        }
+
+        // 2.2.2.3) trip-card-info-weather
+        .trip-card-info-weather .info-weather {
+            font-size: 14px;
+            line-height: 18px;
+            padding-left: 15px;
+        }
     }
 
     // ----------------------------------------
@@ -209,21 +234,115 @@ main {
 // X.) MEDIA QUERIES
 // --------------------------------------------------------------------------------
 // ********************************************************************************
-@media (max-width: 410px) {
-    /* CSS rules for screen widths smaller than 420px */
 
-    // Label destination
-    .inputs-container .destination-div .label-destination {
-        font-size: 18px;
+// --------------------------------------------------------------------------------
+// X.1) CSS rules for screen widths smaller than 410px
+// --------------------------------------------------------------------------------
+@media (max-width: 410px) {
+
+    .inputs-container {
+    
+        // ----------------------------------------
+        // User destination
+        // ----------------------------------------
+        .destination-div {
+    
+            // Label destination
+            .label-destination {
+                font-size: 18px;
+            }
+    
+            // Input destination
+            #input-destination {
+                font-size: 18px;
+    
+                &::placeholder {
+                    font-size: 18px;
+                }
+            }
+        }
+    
+        // ----------------------------------------
+        // User dates
+        // ----------------------------------------
+        .date-div {
+    
+            // start and end dates
+            .start-date-div, .end-date-div {
+    
+                // label
+                .label-start-date, .label-end-date {
+                    font-weight: bold;
+                    font-size: 14px;
+                }
+                
+                // input
+                #input-start-date, #input-end-date {
+                    font-size: 14px;
+                }
+            }
+        }
     }
 
-    // Input destination
-    .inputs-container .destination-div #input-destination {
-        font-size: 18px;
+}
 
-        &::placeholder {
-            font-size: 18px;
+// --------------------------------------------------------------------------------
+// X.2) CSS rules for screen widths greater than 700px
+// --------------------------------------------------------------------------------
+@media (min-width: 700px) and (max-width: 900px) {
+
+    .trip-card {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: auto auto;
+        grid-template-areas: 
+            "img img"
+            "trip-info trip-btn";
+        
+        .trip-card-img {
+            grid-area: img;
+        }
+
+        .trip-card-info {
+          grid-area: trip-info;
+        }
+
+        .trip-card-buttons {
+            grid-area: trip-btn;
+            padding: 6vw 2vw;
+            gap: 12px;
         }
     }
 }
-  
+
+// --------------------------------------------------------------------------------
+// X.3) CSS rules for screen widths greater than 900px
+// --------------------------------------------------------------------------------
+@media (min-width: 900px) {
+
+    .trip-card {
+        display: grid;
+        grid-template-columns: 700px 1fr;
+        grid-template-rows: 1fr auto;
+        grid-template-areas: 
+            "img trip-info"
+            "img trip-btn";
+        
+        .trip-card-img {
+            grid-area: img;
+        }
+
+        .trip-card-info {
+          grid-area: trip-info;
+          padding: 2vw;
+        }
+
+        .trip-card-buttons {
+            grid-area: trip-btn;
+            padding: 2vw;
+            gap: 12px;
+        }
+    }
+}
+
+

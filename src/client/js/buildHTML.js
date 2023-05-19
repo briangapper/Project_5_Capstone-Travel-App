@@ -36,42 +36,52 @@ function createTripInfo(trip_card, geoNamesData, weatherbitData, startDate, endD
 
     console.log('6.2) create trip-info');
 
-    // create div for trip-info
+    // create divs for trip-card-info, trip-card-info-main, trip-card-info-stats, trip-card-info-weather
     const trip_card_info = document.createElement('div');
+    const trip_card_info_main = document.createElement('div');
+    const trip_card_info_stats = document.createElement('div');
+    const trip_card_info_weather = document.createElement('div');
+
     trip_card_info.setAttribute('class', 'trip-card-info');
+    trip_card_info_main.setAttribute('class', 'trip-card-info-main');
+    trip_card_info_stats.setAttribute('class', 'trip-card-info-stats');
+    trip_card_info_weather.setAttribute('class', 'trip-card-info-weather');
     
     // 1.2.1) creates paragraph for 'destination'-info
-    createTripInfo_Destination(trip_card_info, geoNamesData);
+    createTripInfo_Destination(trip_card_info_main, geoNamesData);
 
     // 1.2.2) creates paragraph for 'departing'-info
-    createTripInfo_Departing(trip_card_info, startDate);
+    createTripInfo_Departing(trip_card_info_main, startDate);
 
     // 1.2.3) creates paragraph for 'returning'-info if end-date has been given
     if(endDate !== 'undefined/undefined/'){
-        createTripInfo_Returning(trip_card_info, endDate);
+        createTripInfo_Returning(trip_card_info_main, endDate);
     }
 
     // 1.2.4) creates paragraph for 'trip duration'-info if end-date has been given
     if(endDate !== 'undefined/undefined/'){
-        createTripInfo_TripDuration(trip_card_info, tripDuration);
+        createTripInfo_TripDuration(trip_card_info_stats, tripDuration);
     }
 
     // 1.2.5) creates paragraph for 'x days away'-info
-    createTripInfo_XDaysAway(trip_card_info, dayDifference, geoNamesData);
+    createTripInfo_XDaysAway(trip_card_info_stats, dayDifference, geoNamesData);
 
     // 1.2.6) creates paragraph for 'weather'-info if departure is in less then 16 days
     if(Object.keys(weatherbitData).length > 0){
-        createTripInfo_Weather(trip_card_info, weatherbitData);
+        createTripInfo_Weather(trip_card_info_weather, weatherbitData);
     }
     
     // append info to trip_card
+    trip_card_info.appendChild(trip_card_info_main);
+    trip_card_info.appendChild(trip_card_info_stats);
+    trip_card_info.appendChild(trip_card_info_weather);
     trip_card.appendChild(trip_card_info);
 };
 
 // --------------------------------------------------------------------------------
 // 1.2.1) function createTripInfo_Destination: creates paragraph for 'destination'-info
 // --------------------------------------------------------------------------------
-function createTripInfo_Destination(trip_card_info, geoNamesData){
+function createTripInfo_Destination(trip_card_info_main, geoNamesData){
 
     console.log('6.2.1) create trip-info-destination');
 
@@ -79,93 +89,84 @@ function createTripInfo_Destination(trip_card_info, geoNamesData){
     const city = geoNamesData.city;
     const country = geoNamesData.country;
 
-    // create paragraph with span element
+    // create paragraph with strong element
     const p = document.createElement('p');
-    p.innerHTML = 'My trip to: ';
-    p.style.fontWeight = 'bold';
+    const s = document.createElement('strong');
+    s.innerHTML = 'My trip to: ';
 
-    const s = document.createElement('span');
-    s.innerHTML = `${city}, ${country}`;
-    s.style.fontWeight= 'normal';
-    
-    // append paragraph to trip_card_info
     p.appendChild(s);
-    trip_card_info.appendChild(p);
+    p.innerHTML += `${city}, ${country}`;
+    
+    // append paragraph to trip_card_info_main
+    trip_card_info_main.appendChild(p);
 }
 
 // --------------------------------------------------------------------------------
 // 1.2.2) function createTripInfo_Departing: creates paragraph for 'departing'-info
 // --------------------------------------------------------------------------------
-function createTripInfo_Departing(trip_card_info, startDate){
+function createTripInfo_Departing(trip_card_info_main, startDate){
 
     console.log('6.2.2) create trip-info-departing');
 
-    // create paragraph with span element
+    // create paragraph with strong element
     const p = document.createElement('p');
-    p.innerHTML = 'Departing: ';
-    p.style.fontWeight = 'bold';
+    const s = document.createElement('strong');
+    s.innerHTML = 'Departing: ';
 
-    const s = document.createElement('span');
-    s.innerHTML = startDate;
-    s.style.fontWeight= 'normal';
-    
-    // append paragraph to trip_card_info
     p.appendChild(s);
-    trip_card_info.appendChild(p);
+    p.innerHTML += startDate;
+    
+    // append paragraph to trip_card_info_main
+    trip_card_info_main.appendChild(p);
 }
 
 // --------------------------------------------------------------------------------
 // 1.2.3) function createTripInfo_Returning: creates paragraph for 'returning'-info
 // --------------------------------------------------------------------------------
-function createTripInfo_Returning(trip_card_info, endDate){
+function createTripInfo_Returning(trip_card_info_main, endDate){
 
     console.log('6.2.3) create trip-info-returning');
 
-    // create paragraph with span element
+    // create paragraph with strong element
     const p = document.createElement('p');
-    p.innerHTML = 'Returning: ';
-    p.style.fontWeight = 'bold';
+    const s = document.createElement('strong');
+    s.innerHTML = 'Returning: ';
 
-    const s = document.createElement('span');
-    s.innerHTML = endDate;
-    s.style.fontWeight= 'normal';
-    
-    // append paragraph to trip_card_info
     p.appendChild(s);
-    trip_card_info.appendChild(p);
+    p.innerHTML += endDate;
+    
+    // append paragraph to trip_card_info_main
+    trip_card_info_main.appendChild(p);
 }
 
 // --------------------------------------------------------------------------------
 // 1.2.4) function createTripInfo_TripDuration: creates paragraph for 'trip duration'-info
 // --------------------------------------------------------------------------------
-function createTripInfo_TripDuration(trip_card_info, tripDuration){
+function createTripInfo_TripDuration(trip_card_info_stats, tripDuration){
 
     console.log('6.2.4) create trip-info-trip-duration');
 
-    // create paragraph with span element
+    // create paragraph with strong element
     const p = document.createElement('p');
-    p.innerHTML = 'Trip duration: ';
-    p.style.fontWeight = 'bold';
+    const s = document.createElement('strong');
+    s.innerHTML = 'Trip duration: ';
 
-    const s = document.createElement('span');
+    p.appendChild(s);
 
     if(tripDuration > 1){
-        s.innerHTML = `${tripDuration} days`;
-        s.style.fontWeight= 'normal';
+        p.innerHTML += `${tripDuration} days`;
     } else {
-        s.innerHTML = `${tripDuration} day`;
-        s.style.fontWeight= 'normal';
+        p.innerHTML += `${tripDuration} day`;
     }
     
-    // append paragraph to trip_card_info
-    p.appendChild(s);
-    trip_card_info.appendChild(p);
+    // append paragraph to trip_card_info_main
+    trip_card_info_stats.appendChild(p);
 }
 
 // --------------------------------------------------------------------------------
 // 1.2.5) function createTripInfo_XDaysAway: creates paragraph for 'x days away'-info
 // --------------------------------------------------------------------------------
-function createTripInfo_XDaysAway(trip_card_info, dayDifference, geoNamesData){
+function createTripInfo_XDaysAway(trip_card_info_stats, dayDifference, geoNamesData){
 
     console.log('6.2.5) create trip-info-x-days-away');
 
@@ -173,29 +174,27 @@ function createTripInfo_XDaysAway(trip_card_info, dayDifference, geoNamesData){
     const city = geoNamesData.city;
     const country = geoNamesData.country;
 
-    // create paragraph with span element
+    // create paragraph with strong element
     const p = document.createElement('p');
     p.innerHTML = `${city}, ${country} is `;
 
-    const s = document.createElement('span');
+    const s = document.createElement('strong');
     if(dayDifference > 1){
         s.innerHTML = `${dayDifference} days`;
-        s.style.fontWeight= 'bold';
     } else {
         s.innerHTML = `${dayDifference} day`;
-        s.style.fontWeight= 'bold';
     }
     
     // append paragraph to trip_card_info
     p.appendChild(s);
     p.innerHTML += ' away!'
-    trip_card_info.appendChild(p);
+    trip_card_info_stats.appendChild(p);
 }
 
 // --------------------------------------------------------------------------------
 // 1.2.6) function createTripInfo_weather: creates paragraph for 'weather'-info if departure is in less then 16 days
 // --------------------------------------------------------------------------------
-function createTripInfo_Weather(trip_card_info, weatherbitData){
+function createTripInfo_Weather(trip_card_info_weather, weatherbitData){
 
     console.log('6.2.6) create trip-info-weather');
 
@@ -204,34 +203,25 @@ function createTripInfo_Weather(trip_card_info, weatherbitData){
     const min_temp = weatherbitData.min_temp;
     const weather_description = weatherbitData.weather_description;
 
-    // create multiple paragraphs with span elements
-    const p = document.createElement('p');
-    p.innerHTML = 'Typical weather ';
-    p.style.fontWeight = 'bold';
+    // create multiple paragraphs with strong elements
+    const p1 = document.createElement('p');
+    const s = document.createElement('strong');
+    s.innerHTML = 'Typical weather ';
+    p1.appendChild(s);
+    p1.innerHTML += 'for then is: ';
 
-    const s1 = document.createElement('span');
-    s1.innerHTML = 'for then is: ';
-    s1.style.fontWeight = 'normal';
-    const br1 = document.createElement('br');
+    const p2 = document.createElement('p');
+    p2.setAttribute('class', 'info-weather');
+    p2.innerHTML = `High: ${max_temp}°C, Low: ${min_temp}°C`;
 
-    const s2 = document.createElement('span');
-    s2.innerHTML = `High: ${max_temp}°C, Low: ${min_temp}°C`;
-    s2.style.fontSize = '14px';
-    s2.style.fontWeight = 'normal';
-    const br2 = document.createElement('br');
-
-    const s3 = document.createElement('span');
-    s3.innerHTML = weather_description;
-    s3.style.fontSize = '14px';
-    s3.style.fontWeight = 'normal';
+    const p3 = document.createElement('p');
+    p3.setAttribute('class', 'info-weather');
+    p3.innerHTML = weather_description;
     
-    // append paragraph to trip_card_info
-    p.appendChild(s1);
-    p.appendChild(br1);
-    p.appendChild(s2);
-    p.appendChild(br2);
-    p.appendChild(s3);
-    trip_card_info.appendChild(p);
+    // append paragraphs to trip_card_info_weather
+    trip_card_info_weather.appendChild(p1);
+    trip_card_info_weather.appendChild(p2);
+    trip_card_info_weather.appendChild(p3);
 }
 
 // --------------------------------------------------------------------------------
