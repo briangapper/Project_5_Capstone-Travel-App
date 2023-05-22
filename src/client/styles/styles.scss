@@ -11,8 +11,8 @@ body {
     // 0.1) Imgs
     // ----------------------------------------
     img {
-        max-width: 100%;
-        height: 100%;
+        width: 100%;
+        height: 300px;
         object-fit: cover;
         border-bottom: 1px solid black;
     }
@@ -24,7 +24,6 @@ body {
 // --------------------------------------------------------------------------------
 // ********************************************************************************
 header {
-    min-height: 20vh;
 
     h1 {
         text-align: center;
@@ -227,8 +226,6 @@ main {
 // --------------------------------------------------------------------------------
 // ********************************************************************************
 
-
-
 // ********************************************************************************
 // --------------------------------------------------------------------------------
 // X.) MEDIA QUERIES
@@ -236,7 +233,7 @@ main {
 // ********************************************************************************
 
 // --------------------------------------------------------------------------------
-// X.1) CSS rules for screen widths smaller than 410px
+// X.1) Small phones: CSS rules for screen widths smaller than 410px
 // --------------------------------------------------------------------------------
 @media (max-width: 410px) {
 
@@ -287,9 +284,16 @@ main {
 }
 
 // --------------------------------------------------------------------------------
-// X.2) CSS rules for screen widths greater than 700px
+// X.2) iPad: CSS rules for screen widths greater than 700px
 // --------------------------------------------------------------------------------
 @media (min-width: 700px) and (max-width: 900px) {
+
+    body {
+
+        img {
+            height: 550px;
+        }
+    }
 
     .trip-card {
         display: grid;
@@ -316,12 +320,18 @@ main {
 }
 
 // --------------------------------------------------------------------------------
-// X.3) CSS rules for screen widths greater than 900px
+// X.3) PC: CSS rules for screen widths greater than 900px
 // --------------------------------------------------------------------------------
 @media (min-width: 900px) {
 
-    img {
-        border-right: 1px solid black;
+    body {
+        
+        img {
+            border-right: 1px solid black;
+            border-bottom: none;
+            height: 550px;
+            vertical-align: bottom;
+        }
     }
 
     .trip-cards {
@@ -330,7 +340,7 @@ main {
 
     .trip-card {
         display: grid;
-        grid-template-columns: 700px 1fr;
+        grid-template-columns: 55% 1fr;
         grid-template-rows: 1fr auto;
         grid-template-areas: 
             "img trip-info"

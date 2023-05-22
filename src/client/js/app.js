@@ -43,7 +43,7 @@ async function planTrip(event){
     let tripDuration = '';
 
     // retrieve user inputs
-    const destination = document.getElementById('input-destination').value.trim();
+    let destination = document.getElementById('input-destination').value.trim().replace(/ /g, '-');
     let startDate = document.getElementById('input-start-date').value;
     let endDate = document.getElementById('input-end-date').value;
 
@@ -68,7 +68,7 @@ async function planTrip(event){
         geoNamesData = await getLocationData(destination);
 
         // Get weather information if departure is in less than 16 days
-        if(dayDifference <= 16){
+        if(dayDifference < 16){
             weatherbitData = await getWeatherForecast(geoNamesData, dayDifference);
         };
 
