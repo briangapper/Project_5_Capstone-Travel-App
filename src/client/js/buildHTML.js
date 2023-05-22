@@ -78,9 +78,7 @@ function createTripInfo(trip_card, geoNamesData, weatherbitData, startDate, endD
     trip_card.appendChild(trip_card_info);
 };
 
-// --------------------------------------------------------------------------------
 // 1.2.1) function createTripInfo_Destination: creates paragraph for 'destination'-info
-// --------------------------------------------------------------------------------
 function createTripInfo_Destination(trip_card_info_main, geoNamesData){
 
     console.log('6.2.1) create trip-info-destination');
@@ -101,9 +99,7 @@ function createTripInfo_Destination(trip_card_info_main, geoNamesData){
     trip_card_info_main.appendChild(p);
 }
 
-// --------------------------------------------------------------------------------
 // 1.2.2) function createTripInfo_Departing: creates paragraph for 'departing'-info
-// --------------------------------------------------------------------------------
 function createTripInfo_Departing(trip_card_info_main, startDate){
 
     console.log('6.2.2) create trip-info-departing');
@@ -120,9 +116,7 @@ function createTripInfo_Departing(trip_card_info_main, startDate){
     trip_card_info_main.appendChild(p);
 }
 
-// --------------------------------------------------------------------------------
 // 1.2.3) function createTripInfo_Returning: creates paragraph for 'returning'-info
-// --------------------------------------------------------------------------------
 function createTripInfo_Returning(trip_card_info_main, endDate){
 
     console.log('6.2.3) create trip-info-returning');
@@ -139,9 +133,7 @@ function createTripInfo_Returning(trip_card_info_main, endDate){
     trip_card_info_main.appendChild(p);
 }
 
-// --------------------------------------------------------------------------------
 // 1.2.4) function createTripInfo_TripDuration: creates paragraph for 'trip duration'-info
-// --------------------------------------------------------------------------------
 function createTripInfo_TripDuration(trip_card_info_stats, tripDuration){
 
     console.log('6.2.4) create trip-info-trip-duration');
@@ -163,9 +155,7 @@ function createTripInfo_TripDuration(trip_card_info_stats, tripDuration){
     trip_card_info_stats.appendChild(p);
 }
 
-// --------------------------------------------------------------------------------
 // 1.2.5) function createTripInfo_XDaysAway: creates paragraph for 'x days away'-info
-// --------------------------------------------------------------------------------
 function createTripInfo_XDaysAway(trip_card_info_stats, dayDifference, geoNamesData){
 
     console.log('6.2.5) create trip-info-x-days-away');
@@ -191,9 +181,7 @@ function createTripInfo_XDaysAway(trip_card_info_stats, dayDifference, geoNamesD
     trip_card_info_stats.appendChild(p);
 }
 
-// --------------------------------------------------------------------------------
 // 1.2.6) function createTripInfo_weather: creates paragraph for 'weather'-info if departure is in less then 16 days
-// --------------------------------------------------------------------------------
 function createTripInfo_Weather(trip_card_info_weather, weatherbitData){
 
     console.log('6.2.6) create trip-info-weather');

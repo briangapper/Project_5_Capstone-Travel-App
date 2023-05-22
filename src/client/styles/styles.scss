@@ -16,6 +16,14 @@ body {
         object-fit: cover;
         border-bottom: 1px solid black;
     }
+
+    // ----------------------------------------
+    // 0.2) References
+    // ----------------------------------------
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
 }
 
 // ********************************************************************************
@@ -27,6 +35,8 @@ header {
 
     h1 {
         text-align: center;
+        letter-spacing: normal;
+        transition: letter-spacing 0.5s;
 
         &:hover {
             color: #1a8b1d;
@@ -212,9 +222,18 @@ main {
             background-color: #1a8b1d;
             color: #fff;
             padding: 3px;
+            letter-spacing: normal;
+            transition: letter-spacing 0.3s;
 
             &#remove-trip {
                 background-color: #ad1212;
+            }
+
+            &:hover {
+                letter-spacing: 3px;
+                transition: 0.3s;
+                font-weight: bold;
+                color: #000;
             }
         }
     }

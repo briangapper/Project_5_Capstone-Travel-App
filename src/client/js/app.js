@@ -203,14 +203,26 @@ function createTripCard(geoNamesData, weatherbitData, pixabayData, startDate, en
 
     // ----------------------------------------
     // 2.6.4) Create trip-buttons
-    // ----------------------------------------
-    createTripButtons(trip_card, geoNamesData);
+    // ---------------------------------------
+    setTimeout(function(){
+        
+        createTripButtons(trip_card, geoNamesData);
+        
+        // 2.6.4.1 Add event listener to the 'remove'-button
+        let removeButton = document.getElementById('remove-trip');
+        
+        removeButton.addEventListener('click', function(){
+            let buttonsDiv = removeButton.parentNode;
+            let tripCard = buttonsDiv.parentNode;
+            tripCard.remove();
+        });
+    }, 0);
 
     // ----------------------------------------
     // 2.6.5) Add new trip card to HTML parent div
     // ----------------------------------------
     document.getElementById('trip-cards').prepend(trip_card);
-};
+}
 
 // ********************************************************************************
 // --------------------------------------------------------------------------------
@@ -219,4 +231,4 @@ function createTripCard(geoNamesData, weatherbitData, pixabayData, startDate, en
 // ********************************************************************************
 export {
     planTrip
-};
+}
