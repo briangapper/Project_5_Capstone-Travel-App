@@ -8,6 +8,8 @@ import { calculateTimeDifference } from './helper.js';
 import { createTripImg } from './buildHTML.js';
 import { createTripInfo } from './buildHTML.js';
 import { createTripButtons } from './buildHTML.js';
+import { remove_trip_button } from './handleButtons.js';
+import { add_lodging_info_button } from './handleButtons.js';
 
 // ********************************************************************************
 // --------------------------------------------------------------------------------
@@ -32,17 +34,17 @@ async function planTrip(event){
 
     console.log('1.) Start function planTrip');
 
-    // prevent default behavior
+    // 2.1.1) Prevent default behavior
     event.preventDefault();
 
-    // declare variables
+    // 2.1.2) Declare variables
     let geoNamesData = {};
     let pixabayData = {};
     let weatherbitData = {};
     let dayDifference = '';
     let tripDuration = '';
 
-    // retrieve user inputs
+    // 2.1.3) Retrieve user inputs
     let destination = document.getElementById('input-destination').value.trim().replace(/ /g, '-');
     let startDate = document.getElementById('input-start-date').value;
     let endDate = document.getElementById('input-end-date').value;
@@ -51,10 +53,10 @@ async function planTrip(event){
 
     try {
 
-        // check if user has entered valid inputs
+        // 2.1.4) Check if user has entered valid inputs
         checkUserInput(destination, startDate, endDate);
 
-        // perform date calculations and assign results to variables
+        // 2.1.5) Perform date calculations based on user input and assign results to variables
         const dateObject = calculateTimeDifference(startDate, endDate);
 
         startDate = dateObject.transformed_startDate;
@@ -64,22 +66,25 @@ async function planTrip(event){
 
         console.log(`Start date: ${startDate}, End date: ${endDate}, Days until departure: ${dayDifference}, Trip duration: ${tripDuration}`);
 
-        // Get destination coordinates
+        // 2.1.6) API call 1: get destination coordinates
         geoNamesData = await getLocationData(destination);
 
-        // Get weather information if departure is in less than 16 days
+        // 2.1.7) API call 2: Get weather information if departure is in less than 16 days
         if(dayDifference < 16){
             weatherbitData = await getWeatherForecast(geoNamesData, dayDifference);
         };
 
-        // Get destination picture
-        pixabayData = await getDestinationPicture(destination);
+        // 2.1.8) API call 3: Get destination picture
+        pixabayData = await getDestinationPicture(geoNamesData);
 
-        // Check if the maximum trip-card limit is reached, if so, delete oldest trip-card
-        checkTripCardLimit(5);
+        // 2.1.9) Check if the maximum trip-card limit is reached, if so, delete oldest trip-card
+        checkTripCardLimit(7);
         
-        // Create HTML trip-card
+        // 2.1.10) Create HTML trip-card
         createTripCard(geoNamesData, weatherbitData, pixabayData, startDate, endDate, dayDifference, tripDuration);
+
+        // 2.1.11) Implement functionalities for the different trip-card-buttons
+        handleTripCardButtons();
 
     } catch (error) {
         console.log('Error function planTrip -> ', error);
@@ -88,7 +93,7 @@ async function planTrip(event){
 }
 
 // --------------------------------------------------------------------------------
-// 2.2) async function getLocationData: requests coordinates from GeoNames API
+// 2.2) async function getLocationData: API call 1 -> requests coordinates from GeoNames API
 // --------------------------------------------------------------------------------
 async function getLocationData(destination){
 
@@ -116,7 +121,7 @@ async function getLocationData(destination){
 }
 
 // --------------------------------------------------------------------------------
-// 2.3) async function getWeatherForecast: requests weather forecast from Weatherbit API
+// 2.3) async function getWeatherForecast: API call 2 -> requests weather forecast from Weatherbit API
 // --------------------------------------------------------------------------------
 async function getWeatherForecast(geoNamesData, dayDifference){
 
@@ -140,14 +145,17 @@ async function getWeatherForecast(geoNamesData, dayDifference){
 }
 
 // --------------------------------------------------------------------------------
-// 2.4) async function getDestinationPicture: requests weather forecast from Weatherbit API
+// 2.4) async function getDestinationPicture: API call 3 -> requests weather forecast from Weatherbit API
 // --------------------------------------------------------------------------------
-async function getDestinationPicture(destination){
+async function getDestinationPicture(geoNamesData){
 
     console.log('4.) Start function getDestinationPicture');
 
+    const city = geoNamesData.city;
+    const country = geoNamesData.country;
+
     // fetch call
-    return fetch(`${pathPixabay}?destination=${destination}`)
+    return fetch(`${pathPixabay}?city=${city}&country=${country}`)
         .then(response => response.json())
         .then(data => {
             // Handle the response data
@@ -203,25 +211,28 @@ function createTripCard(geoNamesData, weatherbitData, pixabayData, startDate, en
 
     // ----------------------------------------
     // 2.6.4) Create trip-buttons
-    // ---------------------------------------
-    setTimeout(function(){
-        
-        createTripButtons(trip_card, geoNamesData);
-        
-        // 2.6.4.1 Add event listener to the 'remove'-button
-        let removeButton = document.getElementById('remove-trip');
-        
-        removeButton.addEventListener('click', function(){
-            let buttonsDiv = removeButton.parentNode;
-            let tripCard = buttonsDiv.parentNode;
-            tripCard.remove();
-        });
-    }, 0);
+    // ----------------------------------------
+    createTripButtons(trip_card, geoNamesData);
 
     // ----------------------------------------
     // 2.6.5) Add new trip card to HTML parent div
     // ----------------------------------------
     document.getElementById('trip-cards').prepend(trip_card);
+}
+
+// --------------------------------------------------------------------------------
+// 2.7) function handleTripCardButtons: handle all different trip-card-buttons
+// --------------------------------------------------------------------------------
+function handleTripCardButtons(){
+
+    console.log('7.) Start function handleTripCardButtons');
+
+    // 2.7.1) Handle remove-trip-button
+    remove_trip_button();
+
+    // 2.7.2) Handle add-lodging-info-button
+    add_lodging_info_button();
+
 }
 
 // ********************************************************************************

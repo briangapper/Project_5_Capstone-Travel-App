@@ -214,6 +214,12 @@ main {
         flex-direction: column;
         gap: 8px;
         padding: 8px 8px 15px;
+
+        #div-add-lodging-info, #div-add-packing-list, #div-add-notes, #div-remove-trip {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
     
         button {
             font-size: 16px;
@@ -224,6 +230,21 @@ main {
             padding: 3px;
             letter-spacing: normal;
             transition: letter-spacing 0.3s;
+            
+            // Add '+' symbol
+            &::after {
+                content: '\002B';
+                float: right;
+                transform: scale(1.5);
+                padding-right: 5%;
+            }
+
+            // Add '-' symbol
+            &.active_btn::after {
+                content: '\2212';
+                float: right;
+                transform: scale(1.5);
+            }
 
             &#remove-trip {
                 background-color: #ad1212;
@@ -235,6 +256,10 @@ main {
                 font-weight: bold;
                 color: #000;
             }
+        }
+
+        textarea {
+            width: 100%;
         }
     }
 }
@@ -310,7 +335,7 @@ main {
     body {
 
         img {
-            height: 550px;
+            height: 400px;
         }
     }
 
@@ -359,7 +384,7 @@ main {
 
     .trip-card {
         display: grid;
-        grid-template-columns: 55% 1fr;
+        grid-template-columns: 50% 1fr;
         grid-template-rows: 1fr auto;
         grid-template-areas: 
             "img trip-info"

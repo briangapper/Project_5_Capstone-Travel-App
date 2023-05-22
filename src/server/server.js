@@ -201,11 +201,12 @@ async function getWeatherForecast(req, res){
 async function getDestinationPicture(req, res){
 
     // Get the user destination from the request object
-    const destination = req.query.destination;
+    const city = req.query.city;
+    const country = req.query.country;
 
     // URL for the HTTP GET request to the Pixabay API
-    const pixabay_baseURL = `http://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${destination}&image_type=photo`;
-    const pixabay_altURL = `http://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&id=1130732`;
+    const pixabay_baseURL = `http://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${city}&image_type=photo`;
+    const pixabay_altURL = `http://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${country}&image_type=photo`;
 
     try {
 
@@ -214,23 +215,23 @@ async function getDestinationPicture(req, res){
         const data = await response.json();
         let result = {};
 
-        // If no appropriate picture has been found, retrieve alternative img 
+        // If no appropriate picture has been found, retrieve country img 
         if(data.hits.length === 0){
 
             const response_alt = await fetch(pixabay_altURL);
             const data_alt = await response_alt.json();
 
             result = {
-                destination: destination,
+                destination: country,
                 imageURL: data_alt.hits[0].fullHDURL
             };
         }
         
-        // If appropriate picture has been foung, extract the imageURL from the response data
+        // If appropriate picture has been found, extract the imageURL from the response data
         if(data.hits.length > 0){
 
             result = {
-                destination: destination,
+                destination: city,
                 imageURL: data.hits[0].fullHDURL
             };
         }

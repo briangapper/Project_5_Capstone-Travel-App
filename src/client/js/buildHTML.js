@@ -81,7 +81,7 @@ function createTripInfo(trip_card, geoNamesData, weatherbitData, startDate, endD
 // 1.2.1) function createTripInfo_Destination: creates paragraph for 'destination'-info
 function createTripInfo_Destination(trip_card_info_main, geoNamesData){
 
-    console.log('6.2.1) create trip-info-destination');
+    // console.log('6.2.1) create trip-info-destination');
 
     // retrieve object values
     const city = geoNamesData.city;
@@ -102,7 +102,7 @@ function createTripInfo_Destination(trip_card_info_main, geoNamesData){
 // 1.2.2) function createTripInfo_Departing: creates paragraph for 'departing'-info
 function createTripInfo_Departing(trip_card_info_main, startDate){
 
-    console.log('6.2.2) create trip-info-departing');
+    // console.log('6.2.2) create trip-info-departing');
 
     // create paragraph with strong element
     const p = document.createElement('p');
@@ -119,7 +119,7 @@ function createTripInfo_Departing(trip_card_info_main, startDate){
 // 1.2.3) function createTripInfo_Returning: creates paragraph for 'returning'-info
 function createTripInfo_Returning(trip_card_info_main, endDate){
 
-    console.log('6.2.3) create trip-info-returning');
+    // console.log('6.2.3) create trip-info-returning');
 
     // create paragraph with strong element
     const p = document.createElement('p');
@@ -136,7 +136,7 @@ function createTripInfo_Returning(trip_card_info_main, endDate){
 // 1.2.4) function createTripInfo_TripDuration: creates paragraph for 'trip duration'-info
 function createTripInfo_TripDuration(trip_card_info_stats, tripDuration){
 
-    console.log('6.2.4) create trip-info-trip-duration');
+    // console.log('6.2.4) create trip-info-trip-duration');
 
     // create paragraph with strong element
     const p = document.createElement('p');
@@ -158,7 +158,7 @@ function createTripInfo_TripDuration(trip_card_info_stats, tripDuration){
 // 1.2.5) function createTripInfo_XDaysAway: creates paragraph for 'x days away'-info
 function createTripInfo_XDaysAway(trip_card_info_stats, dayDifference, geoNamesData){
 
-    console.log('6.2.5) create trip-info-x-days-away');
+    // console.log('6.2.5) create trip-info-x-days-away');
 
     // retrieve object values
     const city = geoNamesData.city;
@@ -184,7 +184,7 @@ function createTripInfo_XDaysAway(trip_card_info_stats, dayDifference, geoNamesD
 // 1.2.6) function createTripInfo_weather: creates paragraph for 'weather'-info if departure is in less then 16 days
 function createTripInfo_Weather(trip_card_info_weather, weatherbitData){
 
-    console.log('6.2.6) create trip-info-weather');
+    // console.log('6.2.6) create trip-info-weather');
 
     // retrieve object values
     const max_temp = weatherbitData.max_temp;
@@ -223,39 +223,89 @@ function createTripButtons(trip_card){
     const trip_card_buttons = document.createElement('div');
     trip_card_buttons.setAttribute('class', 'trip-card-buttons');
 
-    // create button 'Add lodging info'
-    const btn1 = document.createElement('button');
-    btn1.setAttribute('type', 'button');
-    btn1.setAttribute('id', 'add-lodging-info');
-    btn1.innerHTML = 'Add lodging info';
+    // 1.3.1) create div 'Add lodging info' that holds a button and a textarea
+    const div_add_lodging_info = document.createElement('div');
+    div_add_lodging_info.setAttribute('id', 'div-add-lodging-info');
 
-    // create button 'Add packing list'
-    const btn2 = document.createElement('button');
-    btn2.setAttribute('type', 'button');
-    btn2.setAttribute('id', 'add-packing-list');
-    btn2.innerHTML = 'Add packing list';
+    // create button 'add-lodging-info'
+    const btn_add_lodging_info = document.createElement('button');
+    btn_add_lodging_info.setAttribute('type', 'button');
+    btn_add_lodging_info.setAttribute('id', 'btn-add-lodging-info');
+    btn_add_lodging_info.textContent = 'Add lodging info';
 
-    // create button 'Add notes'
-    const btn3 = document.createElement('button');
-    btn3.setAttribute('type', 'button');
-    btn3.setAttribute('id', 'add-notes');
-    btn3.innerHTML = 'Add notes';
+    // create textarea 'add-lodging-info'
+    const textArea_add_lodging_info = document.createElement('textarea');
+    textArea_add_lodging_info.setAttribute('id', 'textarea-add-lodging-info');
+    textArea_add_lodging_info.rows = 5;
+    textArea_add_lodging_info.maxLength = 500;
+    textArea_add_lodging_info.placeholder = 'Enter lodging information';
+    textArea_add_lodging_info.style.display = 'none';
+
+    div_add_lodging_info.appendChild(btn_add_lodging_info);
+    div_add_lodging_info.appendChild(textArea_add_lodging_info);
+
+    // 1.3.2) create div 'Add packing list' that holds a button and a textarea
+    const div_add_packing_list = document.createElement('div');
+    div_add_packing_list.setAttribute('id', 'div-add-packing-list');
+
+    // create button 'add-packing-list'
+    const btn_add_packing_list = document.createElement('button');
+    btn_add_packing_list.setAttribute('type', 'button');
+    btn_add_packing_list.setAttribute('id', 'add-packing-list');
+    btn_add_packing_list.textContent = 'Add packing list';
+
+    // create textarea 'add-packing-list'
+    const textArea_add_packing_list = document.createElement('textarea');
+    textArea_add_packing_list.setAttribute('id', 'textarea-add-packing-list');
+    textArea_add_packing_list.rows = 5;
+    textArea_add_packing_list.maxLength = 500;
+    textArea_add_packing_list.placeholder = 'List packing stuff';
+    textArea_add_packing_list.style.display = 'none';
+
+    div_add_packing_list.appendChild(btn_add_packing_list);
+    div_add_packing_list.appendChild(textArea_add_packing_list);
+
+    // 1.3.3) create div 'Add notes' that holds a button and a textarea
+    const div_add_notes = document.createElement('div');
+    div_add_notes.setAttribute('id', 'div-add-notes');
+
+    // create button 'add-notes'
+    const btn_add_notes = document.createElement('button');
+    btn_add_notes.setAttribute('type', 'button');
+    btn_add_notes.setAttribute('id', 'add-notes');
+    btn_add_notes.textContent = 'Add notes';
+
+    // create textarea 'add-notes'
+    const textArea_add_notes = document.createElement('textarea');
+    textArea_add_notes.setAttribute('id', 'textarea-add-packing-list');
+    textArea_add_notes.rows = 5;
+    textArea_add_notes.maxLength = 500;
+    textArea_add_notes.placeholder = 'List packing stuff';
+    textArea_add_notes.style.display = 'none';
+
+    div_add_notes.appendChild(btn_add_notes);
+    div_add_notes.appendChild(textArea_add_notes);
+
+    // 1.3.4) create div 'Rempove trip' that holds a button
+    const div_remove_trip = document.createElement('div');
+    div_remove_trip.setAttribute('id', 'div-remove-trip');
 
     // create button 'Remove trip'
-    const btn4 = document.createElement('button');
-    btn4.setAttribute('type', 'button');
-    btn4.setAttribute('id', 'remove-trip');
-    btn4.innerHTML = 'Remove trip';
+    const btn_remove_trip = document.createElement('button');
+    btn_remove_trip.setAttribute('type', 'button');
+    btn_remove_trip.setAttribute('id', 'remove-trip');
+    btn_remove_trip.textContent = 'Remove trip';
+
+    div_remove_trip.appendChild(btn_remove_trip);
 
     // append buttons to trip_card_buttons
-    trip_card_buttons.appendChild(btn1);
-    trip_card_buttons.appendChild(btn2);
-    trip_card_buttons.appendChild(btn3);
-    trip_card_buttons.appendChild(btn4);
+    trip_card_buttons.appendChild(div_add_lodging_info);
+    trip_card_buttons.appendChild(div_add_packing_list);
+    trip_card_buttons.appendChild(div_add_notes);
+    trip_card_buttons.appendChild(div_remove_trip);
 
     trip_card.appendChild(trip_card_buttons);
 };
-
 
 // ********************************************************************************
 // --------------------------------------------------------------------------------
