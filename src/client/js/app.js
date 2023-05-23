@@ -5,11 +5,13 @@
 // ********************************************************************************
 import { checkUserInput } from './helper.js';
 import { calculateTimeDifference } from './helper.js';
-import { createTripImg } from './buildHTML.js';
-import { createTripInfo } from './buildHTML.js';
-import { createTripButtons } from './buildHTML.js';
-import { remove_trip_button } from './handleButtons.js';
+import { createTripImg } from './buildTripCard.js';
+import { createTripInfo } from './buildTripCard.js';
+import { createTripButtons } from './buildTripCard.js';
 import { add_lodging_info_button } from './handleButtons.js';
+import { add_packing_list_button } from './handleButtons.js';
+import { add_notes_button } from './handleButtons.js';
+import { remove_trip_button } from './handleButtons.js';
 
 // ********************************************************************************
 // --------------------------------------------------------------------------------
@@ -20,6 +22,7 @@ const port = 8000;
 const pathGeoNames = `http://localhost:${port}/geoNames`;
 const pathWeatherbit = `http://localhost:${port}/weatherbit`;
 const pathPixabay = `http://localhost:${port}/pixabay`;
+let unique_identifier = 999;
 
 // ********************************************************************************
 // --------------------------------------------------------------------------------
@@ -43,6 +46,7 @@ async function planTrip(event){
     let weatherbitData = {};
     let dayDifference = '';
     let tripDuration = '';
+    unique_identifier += 1;
 
     // 2.1.3) Retrieve user inputs
     let destination = document.getElementById('input-destination').value.trim().replace(/ /g, '-');
@@ -81,10 +85,10 @@ async function planTrip(event){
         checkTripCardLimit(7);
         
         // 2.1.10) Create HTML trip-card
-        createTripCard(geoNamesData, weatherbitData, pixabayData, startDate, endDate, dayDifference, tripDuration);
+        createTripCard(unique_identifier, geoNamesData, weatherbitData, pixabayData, startDate, endDate, dayDifference, tripDuration);
 
         // 2.1.11) Implement functionalities for the different trip-card-buttons
-        handleTripCardButtons();
+        handleTripCardButtons(unique_identifier);
 
     } catch (error) {
         console.log('Error function planTrip -> ', error);
@@ -189,7 +193,7 @@ function checkTripCardLimit(limit){
 // --------------------------------------------------------------------------------
 // 2.6) function createTripCard: create HTML trip card
 // --------------------------------------------------------------------------------
-function createTripCard(geoNamesData, weatherbitData, pixabayData, startDate, endDate, dayDifference, tripDuration){
+function createTripCard(unique_identifier, geoNamesData, weatherbitData, pixabayData, startDate, endDate, dayDifference, tripDuration){
 
     console.log('6.) Start function createTripCard');
 
@@ -212,7 +216,7 @@ function createTripCard(geoNamesData, weatherbitData, pixabayData, startDate, en
     // ----------------------------------------
     // 2.6.4) Create trip-buttons
     // ----------------------------------------
-    createTripButtons(trip_card, geoNamesData);
+    createTripButtons(trip_card, unique_identifier);
 
     // ----------------------------------------
     // 2.6.5) Add new trip card to HTML parent div
@@ -223,16 +227,21 @@ function createTripCard(geoNamesData, weatherbitData, pixabayData, startDate, en
 // --------------------------------------------------------------------------------
 // 2.7) function handleTripCardButtons: handle all different trip-card-buttons
 // --------------------------------------------------------------------------------
-function handleTripCardButtons(){
+function handleTripCardButtons(unique_identifier){
 
     console.log('7.) Start function handleTripCardButtons');
+    
+    // 2.7.1) Handle add-lodging-info-button
+    add_lodging_info_button(unique_identifier);
+    
+    // 2.7.2) Handle add-packing-list-button
+    add_packing_list_button(unique_identifier);
+    
+    // 2.7.3) Handle add-notes-button
+    add_notes_button(unique_identifier);
 
-    // 2.7.1) Handle remove-trip-button
-    remove_trip_button();
-
-    // 2.7.2) Handle add-lodging-info-button
-    add_lodging_info_button();
-
+    // 2.7.4) Handle remove-trip-button
+    remove_trip_button(unique_identifier);
 }
 
 // ********************************************************************************

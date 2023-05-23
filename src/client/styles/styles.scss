@@ -215,12 +215,14 @@ main {
         gap: 8px;
         padding: 8px 8px 15px;
 
-        #div-add-lodging-info, #div-add-packing-list, #div-add-notes, #div-remove-trip {
+        // Divs
+        .div-button {
             display: flex;
             flex-direction: column;
             gap: 4px;
         }
-    
+        
+        // Buttons
         button {
             font-size: 16px;
             border: none;
@@ -246,20 +248,22 @@ main {
                 transform: scale(1.5);
             }
 
-            &#remove-trip {
+            // Style remove button differently
+            &[id^=btn-remove-trip] {
                 background-color: #ad1212;
-            }
 
+                &::after {
+                    color: transparent;
+                }
+            }
+            
+            // Hove state
             &:hover {
                 letter-spacing: 3px;
                 transition: 0.3s;
                 font-weight: bold;
                 color: #000;
             }
-        }
-
-        textarea {
-            width: 100%;
         }
     }
 }
@@ -385,7 +389,7 @@ main {
     .trip-card {
         display: grid;
         grid-template-columns: 50% 1fr;
-        grid-template-rows: 1fr auto;
+        grid-template-rows: 250px auto;
         grid-template-areas: 
             "img trip-info"
             "img trip-btn";
@@ -396,12 +400,12 @@ main {
 
         .trip-card-info {
           grid-area: trip-info;
-          padding: 2vw;
+          padding: 1vw 2vw;
         }
 
         .trip-card-buttons {
             grid-area: trip-btn;
-            padding: 2vw;
+            padding: 1vw 2vw;
             gap: 12px;
         }
     }

@@ -215,7 +215,7 @@ function createTripInfo_Weather(trip_card_info_weather, weatherbitData){
 // --------------------------------------------------------------------------------
 // 1.3) function createTripButtons: creates trip buttons for card
 // --------------------------------------------------------------------------------
-function createTripButtons(trip_card){
+function createTripButtons(trip_card, unique_identifier){
 
     console.log('6.3) create trip-buttons');
 
@@ -225,17 +225,17 @@ function createTripButtons(trip_card){
 
     // 1.3.1) create div 'Add lodging info' that holds a button and a textarea
     const div_add_lodging_info = document.createElement('div');
-    div_add_lodging_info.setAttribute('id', 'div-add-lodging-info');
+    div_add_lodging_info.setAttribute('class', 'div-button');
 
     // create button 'add-lodging-info'
     const btn_add_lodging_info = document.createElement('button');
     btn_add_lodging_info.setAttribute('type', 'button');
-    btn_add_lodging_info.setAttribute('id', 'btn-add-lodging-info');
+    btn_add_lodging_info.setAttribute('id', `btn-add-lodging-info-${unique_identifier}`);
     btn_add_lodging_info.textContent = 'Add lodging info';
 
     // create textarea 'add-lodging-info'
     const textArea_add_lodging_info = document.createElement('textarea');
-    textArea_add_lodging_info.setAttribute('id', 'textarea-add-lodging-info');
+    textArea_add_lodging_info.setAttribute('id', `textarea-add-lodging-info-${unique_identifier}`);
     textArea_add_lodging_info.rows = 5;
     textArea_add_lodging_info.maxLength = 500;
     textArea_add_lodging_info.placeholder = 'Enter lodging information';
@@ -246,17 +246,17 @@ function createTripButtons(trip_card){
 
     // 1.3.2) create div 'Add packing list' that holds a button and a textarea
     const div_add_packing_list = document.createElement('div');
-    div_add_packing_list.setAttribute('id', 'div-add-packing-list');
+    div_add_packing_list.setAttribute('class', 'div-button');
 
     // create button 'add-packing-list'
     const btn_add_packing_list = document.createElement('button');
     btn_add_packing_list.setAttribute('type', 'button');
-    btn_add_packing_list.setAttribute('id', 'add-packing-list');
+    btn_add_packing_list.setAttribute('id', `btn-add-packing-list-${unique_identifier}`);
     btn_add_packing_list.textContent = 'Add packing list';
 
     // create textarea 'add-packing-list'
     const textArea_add_packing_list = document.createElement('textarea');
-    textArea_add_packing_list.setAttribute('id', 'textarea-add-packing-list');
+    textArea_add_packing_list.setAttribute('id', `textarea-add-packing-list-${unique_identifier}`);
     textArea_add_packing_list.rows = 5;
     textArea_add_packing_list.maxLength = 500;
     textArea_add_packing_list.placeholder = 'List packing stuff';
@@ -267,33 +267,33 @@ function createTripButtons(trip_card){
 
     // 1.3.3) create div 'Add notes' that holds a button and a textarea
     const div_add_notes = document.createElement('div');
-    div_add_notes.setAttribute('id', 'div-add-notes');
+    div_add_notes.setAttribute('class', 'div-button');
 
     // create button 'add-notes'
     const btn_add_notes = document.createElement('button');
     btn_add_notes.setAttribute('type', 'button');
-    btn_add_notes.setAttribute('id', 'add-notes');
+    btn_add_notes.setAttribute('id', `btn-add-notes-${unique_identifier}`);
     btn_add_notes.textContent = 'Add notes';
 
     // create textarea 'add-notes'
     const textArea_add_notes = document.createElement('textarea');
-    textArea_add_notes.setAttribute('id', 'textarea-add-packing-list');
+    textArea_add_notes.setAttribute('id', `textarea-add-notes-${unique_identifier}`);
     textArea_add_notes.rows = 5;
     textArea_add_notes.maxLength = 500;
-    textArea_add_notes.placeholder = 'List packing stuff';
+    textArea_add_notes.placeholder = 'Add personal notes';
     textArea_add_notes.style.display = 'none';
 
     div_add_notes.appendChild(btn_add_notes);
     div_add_notes.appendChild(textArea_add_notes);
 
-    // 1.3.4) create div 'Rempove trip' that holds a button
+    // 1.3.4) create div 'Remove trip' that holds a button
     const div_remove_trip = document.createElement('div');
-    div_remove_trip.setAttribute('id', 'div-remove-trip');
+    div_remove_trip.setAttribute('class', 'div-button');
 
     // create button 'Remove trip'
     const btn_remove_trip = document.createElement('button');
     btn_remove_trip.setAttribute('type', 'button');
-    btn_remove_trip.setAttribute('id', 'remove-trip');
+    btn_remove_trip.setAttribute('id', `btn-remove-trip-${unique_identifier}`);
     btn_remove_trip.textContent = 'Remove trip';
 
     div_remove_trip.appendChild(btn_remove_trip);
