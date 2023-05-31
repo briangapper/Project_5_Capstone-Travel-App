@@ -43,10 +43,7 @@ let pixabayData = [];
 // ----------------------------------------
 const app = express();
 app.use(cors());
-
-app.use(bodyParser.urlencoded({
-    extended: false
-}))
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // ----------------------------------------
@@ -59,7 +56,7 @@ app.use(express.static('dist/dev'));
 // ----------------------------------------
 // 2.3) Configure port
 // ----------------------------------------
-app.listen(8000, function(){
+const server = app.listen(8000, function(){
     console.log('App is listening on port 8000!');
 })
 
@@ -70,7 +67,7 @@ app.listen(8000, function(){
 // ********************************************************************************
 
 // ----------------------------------------
-// 3.1) Initiate GET '/' route
+// 3.1) Initiate '/' route
 // ----------------------------------------
 app.get('/', function(req, res){
     res.sendFile('dist/dev/index.html');
@@ -107,7 +104,7 @@ app.get('/pixabay', getDestinationPicture);
 // ********************************************************************************
 
 // ----------------------------------------
-// 4.1) function getLocationData: makes HTTP GET request to the GeoNames API to get further data of the user destination
+// 4.1) function getLocationData: makes HTTP GET request to the GeoNames API to get further data about the user destination
 // ----------------------------------------
 async function getLocationData(req, res){
 
@@ -248,3 +245,13 @@ async function getDestinationPicture(req, res){
         console.log('Error function getDestinationPicture', error);
     }
 }
+
+// ********************************************************************************
+// --------------------------------------------------------------------------------
+// 5.) EXPORTS
+// --------------------------------------------------------------------------------
+// ********************************************************************************
+module.exports = {
+    getLocationData,
+    server
+};

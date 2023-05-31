@@ -46,7 +46,9 @@ async function planTrip(event){
     let weatherbitData = {};
     let dayDifference = '';
     let tripDuration = '';
+
     unique_identifier += 1;
+
 
     // 2.1.3) Retrieve user inputs
     let destination = document.getElementById('input-destination').value.trim().replace(/ /g, '-');
@@ -89,6 +91,9 @@ async function planTrip(event){
 
         // 2.1.11) Implement functionalities for the different trip-card-buttons
         handleTripCardButtons(unique_identifier);
+        
+        // 2.1.X) Clean ups
+        document.getElementById('input-destination').value = '';
 
     } catch (error) {
         console.log('Error function planTrip -> ', error);
