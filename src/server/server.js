@@ -20,6 +20,8 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config();
 
+const fetch = require('node-fetch');
+
 // 1.6) local function import
 const mockAPIResponse = require('./test.js');
 
@@ -56,7 +58,7 @@ app.use(express.static('dist/dev'));
 // ----------------------------------------
 // 2.3) Configure port
 // ----------------------------------------
-const server = app.listen(8000, function(){
+app.listen(8000, function(){
     console.log('App is listening on port 8000!');
 })
 
@@ -252,6 +254,6 @@ async function getDestinationPicture(req, res){
 // --------------------------------------------------------------------------------
 // ********************************************************************************
 module.exports = {
-    app,
-    server
+    getLocationData,
+    app
 };
