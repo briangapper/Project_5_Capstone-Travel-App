@@ -1,6 +1,6 @@
 // ********************************************************************************
 // --------------------------------------------------------------------------------
-// 0.) PACKAGES
+// 1.) PACKAGES
 // --------------------------------------------------------------------------------
 // ********************************************************************************
 
@@ -27,15 +27,6 @@ const mockAPIResponse = require('./test.js');
 
 // ********************************************************************************
 // --------------------------------------------------------------------------------
-// 1.) VARIABLES
-// --------------------------------------------------------------------------------
-// ********************************************************************************
-let geoNamesData = [];
-let weatherbitData = [];
-let pixabayData = [];
-
-// ********************************************************************************
-// --------------------------------------------------------------------------------
 // 2.) SERVER SETUP
 // --------------------------------------------------------------------------------
 // ********************************************************************************
@@ -58,7 +49,7 @@ app.use(express.static('dist/dev'));
 // ----------------------------------------
 // 2.3) Configure port
 // ----------------------------------------
-app.listen(8000, function(){
+const server = app.listen(8000, function(){
     console.log('App is listening on port 8000!');
 })
 
@@ -106,14 +97,36 @@ app.get('/pixabay', getDestinationPicture);
 // ********************************************************************************
 
 // ----------------------------------------
-// 4.1) function getLocationData: makes HTTP GET request to the GeoNames API to get further data about the user destination
+// 4.1.a) async function getLocationData: retrieves user destination and passes it on to the getGeoNamesData function
 // ----------------------------------------
 async function getLocationData(req, res){
 
-    // Get the destination value from the request object
-    const destination = req.query.destination;
-    console.log('Server -> getLocationData -> Destination: ', destination);
+    try {
 
+        // Get the destination value from the request object
+        const destination = req.query.destination;
+        console.log('Server -> getLocationData -> Destination: ', destination);
+
+        // Pass the destination value to the getGeoNamesData function
+        const result = await getGeoNamesData(destination);
+        console.log('Server -> getLocationData -> GeoNames result: ', result);
+
+        // Send the result back to the client
+        res.send(result);
+        
+    } catch (error) {
+        
+        // Error handling
+        console.log('Error function getLocationData: ', error);
+        res.send(error);
+    }
+}
+
+// ----------------------------------------
+// 4.1.b) async function getGeoNamesData: makes HTTP GET request to the GeoNames API to get destination data
+// ----------------------------------------
+async function getGeoNamesData(destination){
+    
     // URL for the HTTP GET request to the GeoNames API 
     const geoNames_baseURL = `http://api.geonames.org/searchJSON?q=${destination}&maxRows=1&username=${process.env.GEONAME_USERNAME}`;
 
@@ -122,48 +135,63 @@ async function getLocationData(req, res){
         // Make a HTTP GET request to the GeoNames API to get further data of the destination
         const response = await fetch(geoNames_baseURL);
         const data = await response.json();
-        let result = {};
 
         // Check if fetch was successful
         if(data.geonames.length > 0){
 
-            // Extract the latitude, longitude and country from the response data
-            result = {
+            // Return the latitude, longitude and country from the response data as an object
+            return {
                 lat: data.geonames[0].lat,
                 lng: data.geonames[0].lng,
                 city: data.geonames[0].name,
                 country: data.geonames[0].countryName
             };
-
-            console.log('Server -> getLocationData -> GeoNames result: ', result);
-
-            // Add result to geoNames array
-            geoNamesData.push(result);
         }
 
-        // Return result
+        // If fetch wasn't successful, return empty object
+        return {};
+
+    } catch (error) {
+
+        // Error handling
+        console.log('Error function getGeoNamesData: ', error);
+        throw error;
+    }
+}
+
+// ----------------------------------------
+// 4.2.a) function getWeatherForecast: retrieves coordinates and passes them on to the getWeatherbitData function
+// ----------------------------------------
+async function getWeatherForecast(req, res){
+
+    try {
+
+        // Get lat, lng and days until departure values from the request object
+        const lat = req.query.lat;
+        const lng = req.query.lng;
+        const departure = req.query.departure;
+        const days = parseInt(departure);
+        console.log(`Server -> getWeatherForecast -> Lat: ${lat}, Lng: ${lng}, Days: ${days}`);
+
+        // Pass the coordinates to the getWeatherbitData function
+        const result = await getWeatherbitData(lat, lng, days);
+        console.log('Server -> getWeatherForecast -> Weatherbit result: ', result);
+
+        // Send the result back to the client
         res.send(result);
 
     } catch (error) {
-        console.log('Error function getLocationData', error);
+
+        // Error handling
+        console.log('Error function getWeatherForecast: ', error);
         res.send(error);
     }
 }
 
 // ----------------------------------------
-// 4.2) function getWeatherForecast: makes HTTP GET request to the Weatherbit API to get weather forecast 
+// 4.2.b) function getWeatherbitData: makes HTTP GET request to the Weatherbit API to get weather forecast 
 // ----------------------------------------
-async function getWeatherForecast(req, res){
-
-    // Get the lat amd lng values from the request object
-    const lat = req.query.lat;
-    const lng = req.query.lng;
-
-    // Get days until departure  from the request object and convert into int
-    const departure = req.query.departure;
-    const days = parseInt(departure);
-
-    console.log(`Server -> getWeatherForecast -> Lat: ${lat}, Lng: ${lng}, Days: ${days}`);
+async function getWeatherbitData(lat, lng, days){
 
     // URL for the HTTP GET request to the Weatherbit API
     const weatherbit_baseURL = `http://api.weatherbit.io/v2.0/forecast/daily?lat=${lat}&lon=${lng}&key=${process.env.WEATHERBIT_KEY}`;
@@ -174,34 +202,52 @@ async function getWeatherForecast(req, res){
         const response = await fetch(weatherbit_baseURL);
         const data = await response.json();
 
-        // Extract the max temp, min temp and the weather description from the response data
-        const result = {
+        // Return the max temp, min temp and the weather description from the response data as an object
+        return {
             max_temp: data.data[days].max_temp,
             min_temp: data.data[days].min_temp,
             weather_description: data.data[days].weather.description
         };
 
-        console.log('Server -> getWeatherForecast -> Weatherbit result: ', result);
-        
-        // Add result to weatherbit array
-        weatherbitData.push(result);
-
-        // Return result
-        res.send(result);
-
     } catch (error) {
+
+        // Error handling
         console.log('Error function getWeatherForecast', error);
+        throw error;
     }
 }
 
 // ----------------------------------------
-// 4.3) function getDestinationPicture: makes HTTP GET request to the Pixabay API to get destination picture 
+// 4.3.a) function getDestinationPicture: retrieves city and passes it on to the getPixabayData function
 // ----------------------------------------
 async function getDestinationPicture(req, res){
 
-    // Get the user destination from the request object
-    const city = req.query.city;
-    const country = req.query.country;
+    try {
+
+        // Get the user destination from the request object
+        const city = req.query.city;
+        const country = req.query.country;
+        console.log(`Server -> getDestinationPicture -> City: ${city}, Country: ${country}`);
+
+        // Pass the coordinates to the getWeatherbitData function
+        const result = await getPixabayData(city, country);
+        console.log('Server -> getDestinationPicture -> Pixabay result: ', result);
+
+        // Send the result back to the client
+        res.send(result);
+
+    } catch (error) {
+
+        // Error handling
+        console.log('Error function getDestinationPicture: ', error);
+        res.send(error);
+    }
+}
+
+// ----------------------------------------
+// 4.3.b) function getPixabayData: makes HTTP GET request to the Pixabay API to get destination picture 
+// ----------------------------------------
+async function getPixabayData(city, country){
 
     // URL for the HTTP GET request to the Pixabay API
     const pixabay_baseURL = `http://pixabay.com/api/?key=${process.env.PIXABAY_KEY}&q=${city}&image_type=photo`;
@@ -212,7 +258,6 @@ async function getDestinationPicture(req, res){
         // Make a HTTP GET request to the Pixabay API to get an appropriate destination picture
         const response = await fetch(pixabay_baseURL);
         const data = await response.json();
-        let result = {};
 
         // If no appropriate picture has been found, retrieve country img 
         if(data.hits.length === 0){
@@ -220,7 +265,7 @@ async function getDestinationPicture(req, res){
             const response_alt = await fetch(pixabay_altURL);
             const data_alt = await response_alt.json();
 
-            result = {
+            return {
                 destination: country,
                 imageURL: data_alt.hits[0].fullHDURL
             };
@@ -229,22 +274,17 @@ async function getDestinationPicture(req, res){
         // If appropriate picture has been found, extract the imageURL from the response data
         if(data.hits.length > 0){
 
-            result = {
+            return {
                 destination: city,
                 imageURL: data.hits[0].fullHDURL
             };
         }
-        
-        console.log('Server -> getDestinationPicture -> Pixabay result: ', result);
-
-        // Add result to pixabay array
-        pixabayData.push(result);
-
-        // Return result
-        res.send(result);
 
     } catch (error) {
-        console.log('Error function getDestinationPicture', error);
+
+        // Error handling
+        console.log('Error function getPixabayData', error);
+        throw error;
     }
 }
 
@@ -254,6 +294,6 @@ async function getDestinationPicture(req, res){
 // --------------------------------------------------------------------------------
 // ********************************************************************************
 module.exports = {
-    getLocationData,
+    server,
     app
 };

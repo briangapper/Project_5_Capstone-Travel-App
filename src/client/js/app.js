@@ -46,9 +46,7 @@ async function planTrip(event){
     let weatherbitData = {};
     let dayDifference = '';
     let tripDuration = '';
-
     unique_identifier += 1;
-
 
     // 2.1.3) Retrieve user inputs
     let destination = document.getElementById('input-destination').value.trim().replace(/ /g, '-');
@@ -96,7 +94,9 @@ async function planTrip(event){
         document.getElementById('input-destination').value = '';
 
     } catch (error) {
-        console.log('Error function planTrip -> ', error);
+
+        // Error handling
+        console.log('Error function planTrip: ', error);
         return;
     }
 }
@@ -124,8 +124,8 @@ async function getLocationData(destination){
             return data;
         })
         .catch(error => {
-            // Handle errors
-            console.log('Error function getLocationData -> ', error);
+            // Error handling
+            console.log('Error function getLocationData: ', error);
         })
 }
 
@@ -148,8 +148,8 @@ async function getWeatherForecast(geoNamesData, dayDifference){
             return data;
         })
         .catch(error => {
-            // Handle errors
-            console.log('Error function getWeatherForecast -> ', error);
+            // Error handling
+            console.log('Error function getWeatherForecast: ', error);
         })
 }
 
@@ -172,8 +172,8 @@ async function getDestinationPicture(geoNamesData){
             return data;
         })
         .catch(error => {
-            // Handle errors
-            console.log('Error function getDestinationPicture -> ', error);
+            // Error handling
+            console.log('Error function getDestinationPicture: ', error);
         })
 }
 

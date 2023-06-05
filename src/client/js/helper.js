@@ -43,7 +43,9 @@ function checkUserInput(destination, startDate, endDate){
         }
 
     } catch (error) {
-        console.log('Error function checkUserInput', error);
+
+        // Error handling
+        console.log('Error function checkUserInput: ', error);
         throw error;
     }
 }
@@ -85,7 +87,9 @@ function calculateTimeDifference(startDate, endDate){
         return { transformed_startDate, transformed_endDate, dayDifference, tripDuration };
 
     } catch (error) {
-        console.log('Error function calculateTimeDifference', error);
+
+        // Error handling
+        console.log('Error function calculateTimeDifference: ', error);
     }
 }
 
