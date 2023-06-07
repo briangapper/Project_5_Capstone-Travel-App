@@ -20,8 +20,6 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const fetch = require('node-fetch');
-
 // 1.6) local function import
 const mockAPIResponse = require('./test.js');
 
@@ -42,8 +40,8 @@ app.use(bodyParser.json());
 // ----------------------------------------
 // 2.2) Initiate express
 // ----------------------------------------
-app.use(express.static('dist/dev'));
-// app.use(express.static('dist/prod'));
+app.use(express.static('dist/prod'));
+// app.use(express.static('dist/dev'));
 // app.use(express.static('src/client'));
 
 // ----------------------------------------
@@ -63,8 +61,8 @@ const server = app.listen(8000, function(){
 // 3.1) Initiate '/' route
 // ----------------------------------------
 app.get('/', function(req, res){
-    res.sendFile('dist/dev/index.html');
-    // res.sendFile('dist/prod/index.html');
+    res.sendFile('dist/prod/index.html');
+    // res.sendFile('dist/dev/index.html');
     // res.sendFile(path.resolve('src/client/views/index.html'));
 })
 
