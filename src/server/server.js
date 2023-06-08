@@ -20,6 +20,8 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config();
 
+const fetch = require('node-fetch');
+
 // 1.6) local function import
 const mockAPIResponse = require('./test.js');
 
